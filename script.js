@@ -110,3 +110,69 @@ function logout(){
     }
 
 }
+
+/* ---------- Dashboard Low Stock Count ---------- */
+
+window.onload = function () {
+
+    const lowStockRows = document.querySelectorAll("#lowStockTable tr");
+
+    const totalLowStock = lowStockRows.length - 1;
+
+    const countElement = document.getElementById("lowStockCount");
+
+    if (countElement) {
+
+        countElement.innerText = totalLowStock;
+
+    }
+
+};
+
+/* ---------- Block Future Date ---------- */
+
+window.addEventListener("load", function () {
+
+    const issueDate = document.getElementById("issueDate");
+
+    if (issueDate) {
+
+        const today = new Date().toISOString().split("T")[0];
+
+        issueDate.setAttribute("max", today);
+
+    }
+
+});
+
+/* ---------- Save Issue ---------- */
+
+function saveIssue() {
+
+    let issue = {
+
+        college: document.querySelector("select").value,
+
+        department: document.querySelectorAll("input")[0].value,
+
+        issuedTo: document.querySelectorAll("input")[1].value,
+
+        itemName: document.querySelectorAll("input")[2].value,
+
+        quantity: document.querySelectorAll("input")[3].value,
+
+        issueDate: document.getElementById("issueDate").value,
+
+        remarks: document.querySelector("textarea").value
+
+    };
+
+    let issues = JSON.parse(localStorage.getItem("issues")) || [];
+
+    issues.push(issue);
+
+    localStorage.setItem("issues", JSON.stringify(issues));
+
+    alert("✅ Issue Saved Successfully");
+
+}
