@@ -115,6 +115,8 @@ function logout(){
 
 window.onload = function () {
 
+    // Low Stock Count
+
     const lowStockRows = document.querySelectorAll("#lowStockTable tr");
 
     const totalLowStock = lowStockRows.length - 1;
@@ -126,6 +128,14 @@ window.onload = function () {
         countElement.innerText = totalLowStock;
 
     }
+
+    // Load Masters into Dropdowns
+
+    loadDropdown("category", "category");
+
+    loadDropdown("brand", "brand");
+
+    loadDropdown("college", "college");
 
 };
 
@@ -174,5 +184,84 @@ function saveIssue() {
     localStorage.setItem("issues", JSON.stringify(issues));
 
     alert("✅ Issue Saved Successfully");
+
+}
+
+/* ---------- Category Master ---------- */
+
+function saveCategory() {
+
+    let category = document.getElementById("categoryName").value.trim();
+
+    if (category == "") {
+        alert("Please Enter Category Name");
+        return;
+    }
+
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+// Duplicate Check
+
+let exists = categories.some(c => c.toLowerCase() === category.toLowerCase());
+
+if (exists) {
+    alert("❌ Category Already Exists");
+    return;
+}
+
+    categories.push(category);
+
+    localStorage.setItem("categories", JSON.stringify(categories));
+
+    document.getElementById("categoryName").value = "";
+
+    loadCategories();
+
+}
+
+function loadCategories() {
+
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+    let table = document.getElementById("categoryTable");
+
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    categories.forEach(function(category, index) {
+
+        table.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${category}</td>
+        </tr>
+        `;
+
+    });
+
+}
+
+window.onload = function () {
+    loadCategories();
+};
+
+/* ---------- Load Dropdown ---------- */
+
+function loadDropdown(dropdownId, storageKey){
+
+    let dropdown = document.getElementById(dropdownId);
+
+    if(!dropdown) return;
+
+    let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    dropdown.innerHTML = "<option value=''>-- Select --</option>";
+
+    data.forEach(item=>{
+
+        dropdown.innerHTML += `<option>${item}</option>`;
+
+    });
 
 }

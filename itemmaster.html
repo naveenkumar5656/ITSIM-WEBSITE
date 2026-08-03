@@ -165,23 +165,46 @@
 
 <div class="grid">
 
+
+<!-- Item Type -->
+
+<div class="group">
+
+<label>Item Type</label>
+
+<select id="itemType">
+    <option value="">-- Select Item Type --</option>
+    <option value="asset">🖥️ Asset</option>
+    <option value="consumable">📦 Consumable</option>
+</select>
+
+</div>
+
+<!-- Category -->
+
 <div class="group">
 
 <label>Category</label>
 
 <select id="category">
 
-<option>Desktop</option>
-<option>Laptop</option>
-<option>Printer</option>
-<option>Monitor</option>
-<option>UPS</option>
-<option>Switch</option>
-<option>Router</option>
-<option>Server</option>
-<option>CCTV Camera</option>
 
 </select>
+
+</div>
+
+<!-- Quantity -->
+
+<div class="group">
+
+<label>Quantity</label>
+
+<input
+type="number"
+id="quantity"
+placeholder="Enter Quantity"
+min="1"
+value="1">
 
 </div>
 
@@ -200,10 +223,9 @@ placeholder="Enter Item Name">
 
 <label>Brand</label>
 
-<input
-type="text"
-id="brand"
-placeholder="Dell / HP / Lenovo">
+<select id="brand">
+
+</select>
 
 </div>
 
@@ -253,12 +275,6 @@ id="assetid">
 <label>College</label>
 
 <select id="college">
-
-<option>KSRCE</option>
-<option>KSRCT</option>
-<option>KSRCAS</option>
-<option>KSRIET</option>
-<option>Trust Office</option>
 
 </select>
 
