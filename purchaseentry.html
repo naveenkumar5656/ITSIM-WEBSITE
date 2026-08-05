@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purchase Entry</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#0066cc;
+    color:white;
+    padding:20px;
+}
+
+.main{
+    padding:30px;
+}
+
+.form-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+input,select{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    margin-top:25px;
+    padding:12px 25px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>🛒 Purchase Entry</h2>
+
+</div>
+
+<div class="main">
+
+<div class="form-box">
+
+<div class="grid">
+
+<div class="group">
+
+<label>Invoice No</label>
+
+<input type="text" id="invoice">
+
+</div>
+
+<div class="group">
+
+<label>Purchase Date</label>
+
+<input type="date" id="purchaseDate">
+
+</div>
+
+<div class="group">
+
+<label>Vendor</label>
+
+<select id="vendor">
+
+<option>Prime Technologies</option>
+<option>Dell</option>
+<option>HP</option>
+
+</select>
+
+</div>
+
+<div class="group">
+
+<label>College</label>
+
+<select id="college">
+
+<option>KSRCE</option>
+<option>KSRCT</option>
+<option>KSRCAS</option>
+
+</select>
+
+</div>
+
+</div>
+
+<button>Add Items</button>
+
+<hr><br>
+
+<h3>Purchase Items</h3>
+
+<table id="purchaseTable" border="1" width="100%" cellspacing="0" cellpadding="8">
+
+<tr style="background:#0066cc;color:white;">
+
+<th>Item</th>
+
+<th>Quantity</th>
+
+<th>Rate</th>
+
+<th>Total</th>
+
+<th>Action</th>
+
+</tr>
+
+<tr id="firstRow">
+
+<td>
+
+<select>
+
+<option>Mouse</option>
+<option>Keyboard</option>
+<option>Monitor</option>
+<option>Desktop</option>
+<option>Laptop</option>
+
+</select>
+
+</td>
+
+<td>
+
+<input type="number" value="1" class="qty" onkeyup="calculateTotal(this)">
+
+</td>
+
+<td>
+
+<input type="number" class="rate" onkeyup="calculateTotal(this)">
+
+</td>
+
+<td>
+
+<input type="number" class="total" readonly>
+
+</td>
+
+<td>
+
+<button type="button" onclick="deleteRow(this)">🗑 Delete</button>
+
+</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<button type="button" onclick="addRow()">➕ Add Another Item</button>
+
+<br><br>
+
+<h2>
+
+Grand Total : ₹ <span id="grandTotal">0</span>
+
+</h2>
+
+<button type="button">💾 Save Purchase</button>
+
+</div>
+
+</div>
+
+<script>
+
+function calculateTotal(element){
+
+    let row = element.parentElement.parentElement;
+
+    let qty = row.querySelector(".qty").value;
+    let rate = row.querySelector(".rate").value;
+
+    qty = Number(qty);
+    rate = Number(rate);
+
+    row.querySelector(".total").value = qty * rate;
+
+    calculateGrandTotal();
+
+}
+
+function addRow(){
+
+    let table = document.getElementById("purchaseTable");
+
+    let row = table.insertRow(-1);
+
+    row.innerHTML = `
+
+    <td>
+
+        <select>
+
+            <option>Mouse</option>
+            <option>Keyboard</option>
+            <option>Monitor</option>
+            <option>Desktop</option>
+            <option>Laptop</option>
+
+        </select>
+
+    </td>
+
+    <td>
+
+        <input type="number" value="1"
+        class="qty"
+        onkeyup="calculateTotal(this)">
+
+    </td>
+
+    <td>
+
+        <input type="number"
+        class="rate"
+        onkeyup="calculateTotal(this)">
+
+    </td>
+
+    <td>
+
+        <input type="number"
+        class="total"
+        readonly>
+
+    </td>
+
+    <td>
+
+<button type="button" onclick="deleteRow(this)">🗑 Delete</button>
+
+</td>
+
+    `;
+
+}
+
+function calculateGrandTotal(){
+
+    let totals = document.querySelectorAll(".total");
+
+    let grand = 0;
+
+    totals.forEach(function(box){
+
+        grand += Number(box.value);
+
+    });
+
+    document.getElementById("grandTotal").innerText = grand;
+
+}
+
+function deleteRow(button){
+
+    let table = document.getElementById("purchaseTable");
+
+    if(table.rows.length <= 2){
+
+        alert("At least one item is required.");
+
+        return;
+
+    }
+
+    let row = button.parentElement.parentElement;
+
+    row.remove();
+
+    calculateGrandTotal();
+
+}
+
+</script>
+
+</body>
+
+</html>

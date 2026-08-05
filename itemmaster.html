@@ -176,7 +176,9 @@
 <input
 type="number"
 id="quantity"
-placeholder="Enter Quantity">
+placeholder="Enter Quantity"
+min="1"
+value="1">
 
 </div>
 
@@ -239,7 +241,7 @@ placeholder="Enter Cost">
 
 <label>Item Type</label>
 
-<select id="itemType">
+<select id="itemType" onchange="toggleItemType()"></select>
     <option value="">-- Select Item Type --</option>
     <option value="asset">🖥️ Asset</option>
     <option value="consumable">📦 Consumable</option>

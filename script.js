@@ -265,3 +265,34 @@ function loadDropdown(dropdownId, storageKey){
     });
 
 }
+
+/* ---------- Item Type Change ---------- */
+
+function toggleItemType() {
+
+    let itemType = document.getElementById("itemType").value;
+
+    let serialGroup = document.getElementById("serialGroup");
+    let assetGroup = document.getElementById("assetGroup");
+    let quantity = document.getElementById("quantity");
+
+    if(itemType === "consumable"){
+
+        serialGroup.style.display = "none";
+        assetGroup.style.display = "none";
+
+        quantity.readOnly = false;
+        quantity.value = 1;
+
+    }
+    else{
+
+        serialGroup.style.display = "flex";
+        assetGroup.style.display = "flex";
+
+        quantity.value = 1;
+        quantity.readOnly = true;
+
+    }
+
+}
