@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Master</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#0066cc;
+    color:white;
+    padding:20px;
+}
+
+.container{
+    width:90%;
+    margin:20px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+input,textarea{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+textarea{
+    resize:none;
+    height:70px;
+}
+
+.full{
+    grid-column:1/3;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    border:none;
+    background:#28a745;
+    color:white;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:30px;
+}
+
+table th{
+    background:#0066cc;
+    color:white;
+}
+
+table th,
+table td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:left;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h2>🏢 Vendor Master</h2>
+</div>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="group">
+<label>Vendor Code</label>
+<input type="text" id="vendorCode">
+</div>
+
+<div class="group">
+<label>Vendor Name</label>
+<input type="text" id="vendorName">
+</div>
+
+<div class="group">
+<label>Contact Person</label>
+<input type="text" id="contactPerson">
+</div>
+
+<div class="group">
+<label>Mobile</label>
+<input type="text" id="mobile">
+</div>
+
+<div class="group">
+<label>Email</label>
+<input type="email" id="email">
+</div>
+
+<div class="group">
+<label>GST No</label>
+<input type="text" id="gst">
+</div>
+
+<div class="group full">
+<label>Address</label>
+<textarea id="address"></textarea>
+</div>
+
+</div>
+
+<button onclick="saveVendor()">💾 Save Vendor</button>
+
+<table id="vendorTable">
+
+<tr>
+<th>Vendor Code</th>
+<th>Vendor Name</th>
+<th>Contact</th>
+<th>Mobile</th>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+loadVendors();
+
+function saveVendor(){
+
+let vendor={
+
+code:document.getElementById("vendorCode").value,
+
+name:document.getElementById("vendorName").value,
+
+contact:document.getElementById("contactPerson").value,
+
+mobile:document.getElementById("mobile").value,
+
+email:document.getElementById("email").value,
+
+gst:document.getElementById("gst").value,
+
+address:document.getElementById("address").value
+
+};
+
+let vendors=JSON.parse(localStorage.getItem("vendors"))||[];
+
+vendors.push(vendor);
+
+localStorage.setItem("vendors",JSON.stringify(vendors));
+
+alert("Vendor Saved Successfully");
+
+location.reload();
+
+}
+
+function loadVendors(){
+
+let vendors=JSON.parse(localStorage.getItem("vendors"))||[];
+
+let table=document.getElementById("vendorTable");
+
+vendors.forEach(function(v){
+
+let row=table.insertRow(-1);
+
+row.innerHTML=`
+<td>${v.code}</td>
+<td>${v.name}</td>
+<td>${v.contact}</td>
+<td>${v.mobile}</td>
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

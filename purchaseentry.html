@@ -206,7 +206,7 @@ Grand Total : ₹ <span id="grandTotal">0</span>
 
 </h2>
 
-<button type="button">💾 Save Purchase</button>
+<button type="button" onclick="savePurchase()">💾 Save Purchase</button>
 
 </div>
 
@@ -319,6 +319,32 @@ function deleteRow(button){
     row.remove();
 
     calculateGrandTotal();
+
+}
+
+function savePurchase(){
+
+    let purchase = {
+
+        invoice : document.getElementById("invoice").value,
+
+        date : document.getElementById("purchaseDate").value,
+
+        vendor : document.getElementById("vendor").value,
+
+        college : document.getElementById("college").value,
+
+        grandTotal : document.getElementById("grandTotal").innerText
+
+    };
+
+    let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+
+    purchases.push(purchase);
+
+    localStorage.setItem("purchases", JSON.stringify(purchases));
+
+    alert("✅ Purchase Saved Successfully");
 
 }
 
