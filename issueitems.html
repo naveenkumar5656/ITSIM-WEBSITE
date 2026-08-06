@@ -45,7 +45,34 @@ ITSIM - IT Support & Infrastructure Management
 <br><br>
 
 <label><b>Item Name</b></label><br>
-<input type="text" placeholder="Enter Item Name">
+
+<select id="itemName" onchange="changeStock()">
+
+    <option>Select Item</option>
+
+    <option>Mouse</option>
+
+    <option>Keyboard</option>
+
+    <option>Monitor</option>
+
+    <option>Desktop</option>
+
+    <option>Laptop</option>
+
+    <option>Printer</option>
+
+    <option>LAN Cable</option>
+
+    <option>UPS</option>
+
+</select>
+
+<br><br>
+
+<label><b>Available Stock</b></label><br>
+
+<input type="number" id="availableStock" value="100" readonly>
 
 <br><br>
 
@@ -77,6 +104,72 @@ cursor:pointer;">
 📤 Issue Item
 
 </button>
+
+<script>
+
+function changeStock(){
+
+    let item = document.getElementById("itemName").value;
+
+    let stock = document.getElementById("availableStock");
+
+    if(item=="Mouse"){
+
+        stock.value=100;
+
+    }
+
+    else if(item=="Keyboard"){
+
+        stock.value=50;
+
+    }
+
+    else if(item=="Monitor"){
+
+        stock.value=25;
+
+    }
+
+    else if(item=="Desktop"){
+
+        stock.value=15;
+
+    }
+
+    else if(item=="Laptop"){
+
+        stock.value=40;
+
+    }
+
+    else if(item=="Printer"){
+
+        stock.value=10;
+
+    }
+
+    else if(item=="LAN Cable"){
+
+        stock.value=500;
+
+    }
+
+    else if(item=="UPS"){
+
+        stock.value=30;
+
+    }
+
+    else{
+
+        stock.value=0;
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>
