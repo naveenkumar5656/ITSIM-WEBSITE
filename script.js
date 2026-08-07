@@ -319,3 +319,127 @@ function loadCategoryDropdown() {
     });
 
 }
+
+function saveBrand() {
+
+    let brand = document.getElementById("brandName").value.trim();
+
+    if (brand == "") {
+        alert("Please Enter Brand Name");
+        return;
+    }
+
+    let brands = JSON.parse(localStorage.getItem("brands")) || [];
+
+    let exists = brands.some(b => b.toLowerCase() === brand.toLowerCase());
+
+    if (exists) {
+        alert("Brand Already Exists");
+        return;
+    }
+
+    brands.push(brand);
+
+    localStorage.setItem("brands", JSON.stringify(brands));
+
+    document.getElementById("brandName").value = "";
+
+    loadBrands();
+
+}
+
+function loadBrands() {
+
+    let brands = JSON.parse(localStorage.getItem("brands")) || [];
+
+    let table = document.getElementById("brandTable");
+
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    brands.forEach(function(brand, index) {
+
+        table.innerHTML += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${brand}</td>
+        </tr>
+        `;
+
+    });
+
+}
+
+// ================= BRAND MASTER =================
+
+function saveBrand() {
+
+    let brand = document.getElementById("brandName").value.trim();
+
+    if (brand === "") {
+        alert("Please Enter Brand Name");
+        return;
+    }
+
+    let brands = JSON.parse(localStorage.getItem("brands")) || [];
+
+    if (brands.includes(brand)) {
+        alert("Brand Already Exists");
+        return;
+    }
+
+    brands.push(brand);
+
+    localStorage.setItem("brands", JSON.stringify(brands));
+
+    document.getElementById("brandName").value = "";
+
+    loadBrands();
+
+}
+
+function loadBrands() {
+
+    let table = document.getElementById("brandTable");
+
+    if (!table) return;
+
+    let brands = JSON.parse(localStorage.getItem("brands")) || [];
+
+    table.innerHTML = "";
+
+    brands.forEach(function(brand,index){
+
+        table.innerHTML += `
+        <tr>
+            <td>${index+1}</td>
+            <td>${brand}</td>
+            <td>
+                <button class="delete"
+                onclick="deleteBrand(${index})">
+                Delete
+                </button>
+            </td>
+        </tr>`;
+    });
+
+}
+
+function deleteBrand(index){
+
+    let brands = JSON.parse(localStorage.getItem("brands")) || [];
+
+    brands.splice(index,1);
+
+    localStorage.setItem("brands",JSON.stringify(brands));
+
+    loadBrands();
+
+}
+
+window.addEventListener("load",function(){
+
+    loadBrands();
+
+});

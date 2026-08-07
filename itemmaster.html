@@ -398,5 +398,29 @@ id="department">
 
 <script src="script.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    let dropdown = document.getElementById("category");
+
+    if (dropdown) {
+
+        let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+        dropdown.innerHTML = '<option value="">-- Select Category --</option>';
+
+        categories.forEach(function(cat){
+
+            dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
+
+        });
+
+    }
+
+});
+</script>
+
+<script src="script.js"></script>
+
 </body>
 </html>
