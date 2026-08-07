@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITSIM - Item Master</title>
+    <title>TEST ITEM MASTER</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -175,7 +175,7 @@
 
 <input
 type="number"
-id="quantity"
+id="itemQuantity"
 placeholder="Enter Quantity"
 min="1"
 value="1">
@@ -239,15 +239,13 @@ placeholder="Enter Cost">
 
 <div class="group">
 
-<label>Item Type</label>
+    <label>Item Type</label>
 
-<select id="itemType" onchange="toggleItemType()">
-
-    <option value="">-- Select Item Type --</option>
-    <option value="asset">🖥️ Asset</option>
-    <option value="consumable">📦 Consumable</option>
-
-</select>
+    <select id="itemType" onchange="toggleItemType()">
+        <option value="">-- Select Item Type --</option>
+        <option value="asset">🖥️ Asset</option>
+        <option value="consumable">📦 Consumable</option>
+    </select>
 
 </div>
 
@@ -255,12 +253,9 @@ placeholder="Enter Cost">
 
 <div class="group">
 
-<label>Category</label>
+    <label>Category</label>
 
-<select id="category">
-
-
-</select>
+    <select id="category"></select>
 
 </div>
 
@@ -268,89 +263,100 @@ placeholder="Enter Cost">
 
 <div class="group">
 
-<label>Quantity</label>
+    <label>Quantity</label>
 
-<input
-type="number"
-id="quantity"
-placeholder="Enter Quantity"
-min="1"
-value="1">
+    <input
+        type="number"
+        id="quantity"
+        placeholder="Enter Quantity"
+        min="1"
+        value="1">
 
 </div>
+
+<!-- Item Name -->
 
 <div class="group">
 
-<label>Item Name</label>
+    <label>Item Name</label>
 
-<input
-type="text"
-id="itemname"
-placeholder="Enter Item Name">
+    <input
+        type="text"
+        id="itemname"
+        placeholder="Enter Item Name">
 
 </div>
+
+<!-- Brand -->
 
 <div class="group">
 
-<label>Brand</label>
+    <label>Brand</label>
 
-<select id="brand">
-
-</select>
+    <select id="brand"></select>
 
 </div>
+
+<!-- Model -->
 
 <div class="group">
 
-<label>Model</label>
+    <label>Model</label>
 
-<input
-type="text"
-id="model"
-placeholder="Model Number">
+    <input
+        type="text"
+        id="model"
+        placeholder="Model Number">
 
 </div>
+
+<!-- Specification -->
 
 <div class="group full">
 
-<label>Specification</label>
+    <label>Specification</label>
 
-<textarea
-id="specification"
-placeholder="Enter Specification"></textarea>
+    <textarea
+        id="specification"
+        placeholder="Enter Specification"></textarea>
+
+</div>
+
+<!-- Serial Number -->
+
+<div class="group" id="serialGroup">
+
+    <label>Serial Number</label>
+
+    <input
+        type="text"
+        id="serial">
 
 </div>
 
-< div class="group" id="serialGroup">
-
-
-<label>Serial Number</label>
-
-<input
-type="text"
-id="serial">
-
-</div>
+<!-- Asset ID -->
 
 <div class="group">
 
-<label>Asset ID</label>
+    <label>Asset ID</label>
 
-<input
-type="text"
-id="assetid">
+    <input
+        type="text"
+        id="assetid">
 
 </div>
+
+<!-- College -->
 
 <div class="group">
 
-<label>College</label>
+    <label>College</label>
 
-<select id="college">
-
-</select>
+    <select id="college"></select>
 
 </div>
+
+<!-- Department -->
 
 <div class="group">
 
@@ -361,6 +367,8 @@ type="text"
 id="department">
 
 </div>
+
+</div> </div>   <!-- grid close -->
 
 <hr style="margin:30px 0;">
 
