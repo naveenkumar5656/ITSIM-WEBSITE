@@ -243,9 +243,12 @@ function loadCategories() {
 }
 
 window.onload = function () {
-    loadCategories();
-};
 
+    loadCategories();
+
+    loadCategoryDropdown();
+
+};
 /* ---------- Load Dropdown ---------- */
 
 function loadDropdown(dropdownId, storageKey){
@@ -294,5 +297,25 @@ function toggleItemType() {
         quantity.readOnly = true;
 
     }
+
+}
+
+function loadCategoryDropdown() {
+
+    let categoryDropdown = document.getElementById("category");
+
+    if (!categoryDropdown) return;
+
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+    categoryDropdown.innerHTML = '<option value="">-- Select Category --</option>';
+
+    categories.forEach(function(category) {
+
+        categoryDropdown.innerHTML += `
+            <option value="${category}">${category}</option>
+        `;
+
+    });
 
 }
