@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ITSIM - Specification Master</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#0066cc;
+    color:white;
+    padding:18px 30px;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.container{
+    width:80%;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+label{
+    font-weight:bold;
+}
+
+select,input{
+    width:100%;
+    padding:12px;
+    margin-top:8px;
+    margin-bottom:20px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:15px;
+}
+
+button{
+    padding:12px 22px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    margin-right:10px;
+}
+
+.save{
+    background:#28a745;
+}
+
+.back{
+    background:#0066cc;
+}
+
+.delete{
+    background:#dc3545;
+}
+
+table{
+    width:100%;
+    margin-top:25px;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#0066cc;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+ITSIM - Specification Master
+</div>
+
+<div class="container">
+
+<label>Category</label>
+
+<select id="category"></select>
+
+<label>Brand</label>
+
+<select id="brand"></select>
+
+<label>Item Name</label>
+
+<select id="itemName"></select>
+
+<label>Specification</label>
+
+<input
+type="text"
+id="specificationName"
+placeholder="Enter Specification">
+
+<button class="save" onclick="saveSpecification()">
+💾 Save
+</button>
+
+<button class="back"
+onclick="window.location.href='itemmaster.html'">
+⬅ Back
+</button>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>S.No</th>
+<th>Category</th>
+<th>Brand</th>
+<th>Item Name</th>
+<th>Specification</th>
+<th>Delete</th>
+
+</tr>
+
+</thead>
+
+<tbody id="specificationTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

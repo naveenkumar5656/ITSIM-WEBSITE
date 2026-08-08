@@ -442,4 +442,280 @@ window.addEventListener("load",function(){
 
     loadBrands();
 
+    loadBrandDropdown();
+
+    loadItemNameDropdown();
+
+    loadItemCategory();
+
+    loadItemNames();
+
+    loadCategoryDropdown();
+
+    loadSpecifications();
+
 });
+
+function loadBrandDropdown() {
+
+    let brandDropdown = document.getElementById("brand");
+
+    if (!brandDropdown) return;
+
+    let brands = JSON.parse(localStorage.getItem("brands")) || [];
+
+    brandDropdown.innerHTML = '<option value="">-- Select Brand --</option>';
+
+    brands.forEach(function(brand){
+
+        brandDropdown.innerHTML += `
+            <option value="${brand}">${brand}</option>
+        `;
+
+    });
+
+}
+
+// ================= ITEM NAME MASTER =================
+
+function saveItemName(){
+
+    let category=document.getElementById("category").value;
+
+    let itemName=document.getElementById("itemName").value.trim();
+
+    if(category=="" || itemName==""){
+        alert("Select Category and Enter Item Name");
+        return;
+    }
+
+    let itemNames=JSON.parse(localStorage.getItem("itemNames")) || [];
+
+    let exists=itemNames.some(x =>
+        x.category===category &&
+        x.itemName.toLowerCase()===itemName.toLowerCase()
+    );
+
+    if(exists){
+        alert("Item Name Already Exists");
+        return;
+    }
+
+    itemNames.push({
+        category:category,
+        itemName:itemName
+    });
+
+    localStorage.setItem("itemNames",JSON.stringify(itemNames));
+
+    alert("Item Name Saved Successfully");
+
+    document.getElementById("itemName").value="";
+
+    loadItemNames();
+
+}
+
+function loadItemNames(){
+
+    let table=document.getElementById("itemNameTable");
+
+    if(!table) return;
+
+    let itemNames=JSON.parse(localStorage.getItem("itemNames")) || [];
+
+    table.innerHTML="";
+
+    itemNames.forEach(function(item,index){
+
+        table.innerHTML+=`
+        <tr>
+
+            <td>${index+1}</td>
+
+            <td>${item.category}</td>
+
+            <td>${item.itemName}</td>
+
+            <td>
+                <button class="delete"
+                onclick="deleteItemName(${index})">
+                Delete
+                </button>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+}
+
+function deleteItemName(index){
+
+    let itemNames = JSON.parse(localStorage.getItem("itemNames")) || [];
+
+    itemNames.splice(index,1);
+
+    localStorage.setItem("itemNames",JSON.stringify(itemNames));
+
+    loadItemNames();
+
+}
+
+function loadItemCategory(){
+
+    let dropdown=document.getElementById("category");
+
+    if(!dropdown) return;
+
+    let categories=JSON.parse(localStorage.getItem("categories")) || [];
+
+    dropdown.innerHTML='<option value="">-- Select Category --</option>';
+
+    categories.forEach(function(category){
+
+        dropdown.innerHTML += `
+        <option value="${category}">
+            ${category}
+        </option>`;
+
+    });
+
+}
+
+// ================= SPECIFICATION MASTER =================
+
+function saveSpecification(){
+
+    let category = document.getElementById("category").value;
+
+    let brand = document.getElementById("brand").value;
+
+    let itemName = document.getElementById("itemName").value;
+
+    let specification = document.getElementById("specificationName").value.trim();
+
+    if(category=="" || brand=="" || itemName=="" || specification==""){
+
+        alert("Please fill all fields");
+
+        return;
+
+    }
+
+    let specifications = JSON.parse(localStorage.getItem("specifications")) || [];
+
+    let exists = specifications.some(x =>
+
+        x.category===category &&
+
+        x.brand===brand &&
+
+        x.itemName===itemName &&
+
+        x.specification.toLowerCase()===specification.toLowerCase()
+
+    );
+
+    if(exists){
+
+        alert("Specification Already Exists");
+
+        return;
+
+    }
+
+    specifications.push({
+
+        category:category,
+
+        brand:brand,
+
+        itemName:itemName,
+
+        specification:specification
+
+    });
+
+    localStorage.setItem("specifications",JSON.stringify(specifications));
+
+    alert("Specification Saved Successfully");
+
+    document.getElementById("specificationName").value="";
+
+    loadSpecifications();
+
+}
+
+function loadSpecifications(){
+
+    let table = document.getElementById("specificationTable");
+
+    if(!table) return;
+
+    let specifications = JSON.parse(localStorage.getItem("specifications")) || [];
+
+    table.innerHTML = "";
+
+    specifications.forEach(function(spec,index){
+
+        table.innerHTML += `
+        <tr>
+
+            <td>${index+1}</td>
+
+            <td>${spec.category}</td>
+
+            <td>${spec.brand}</td>
+
+            <td>${spec.itemName}</td>
+
+            <td>${spec.specification}</td>
+
+            <td>
+                <button class="delete"
+                onclick="deleteSpecification(${index})">
+                Delete
+                </button>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+}
+
+function deleteSpecification(index){
+
+    let specifications = JSON.parse(localStorage.getItem("specifications")) || [];
+
+    specifications.splice(index,1);
+
+    localStorage.setItem("specifications",JSON.stringify(specifications));
+
+    loadSpecifications();
+
+}
+
+function loadItemNameDropdown(){
+
+    let dropdown = document.getElementById("itemname");
+
+    if(!dropdown) return;
+
+    let itemNames = JSON.parse(localStorage.getItem("itemNames")) || [];
+
+    dropdown.innerHTML = '<option value="">-- Select Item Name --</option>';
+
+    itemNames.forEach(function(item){
+
+        dropdown.innerHTML += `
+        <option value="${item.itemName}">
+            ${item.itemName}
+        </option>`;
+
+    });
+
+}
