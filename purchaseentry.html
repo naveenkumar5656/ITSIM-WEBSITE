@@ -126,6 +126,38 @@ button{
 
 </div>
 
+<div class="group">
+
+<label>Category</label>
+
+<select id="category">
+    <option value="">-- Select Category --</option>
+</select>
+
+</div>
+
+
+<div class="group">
+
+<label>Purpose / Place</label>
+
+<input
+type="text"
+id="purpose"
+placeholder="Enter Purpose / Place">
+
+</div>
+
+
+<div class="group">
+
+<label>Particulars of Invoice</label>
+
+<input
+type="text"
+id="particulars"
+placeholder="Enter Particulars of Invoice">
+
 </div>
 
 <button>Add Items</button>
@@ -205,6 +237,69 @@ button{
 Grand Total : ₹ <span id="grandTotal">0</span>
 
 </h2>
+
+<div style="margin-top:20px;">
+
+    <label>Amount Paid</label>
+
+    <input
+        type="number"
+        id="amountPaid"
+        value="0"
+        min="0"
+        placeholder="Enter Amount Paid"
+        oninput="calculateBalance()"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+    <label>Balance Amount</label>
+
+    <input
+        type="number"
+        id="balanceAmount"
+        value="0"
+        readonly
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box; background:#f1f1f1;"
+    >
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+    <label>Payment Status</label>
+
+    <select
+        id="paymentStatus"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;">
+
+        <option value="">-- Select Status --</option>
+        <option value="Paid">Paid</option>
+        <option value="Partial">Partial</option>
+        <option value="Pending">Pending</option>
+
+    </select>
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+    <label>Remarks</label>
+
+    <input
+        type="text"
+        id="remarks"
+        placeholder="Enter Remarks"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
 
 <button type="button" onclick="savePurchase()">💾 Save Purchase</button>
 
@@ -300,6 +395,32 @@ function calculateGrandTotal(){
 
     document.getElementById("grandTotal").innerText = grand;
 
+    calculateBalance();
+
+}
+
+
+function calculateBalance(){
+
+    let grandTotal =
+        Number(document.getElementById("grandTotal").innerText) || 0;
+
+    let amountPaid =
+        Number(document.getElementById("amountPaid").value) || 0;
+
+    if(amountPaid > grandTotal){
+
+        alert("Amount Paid cannot be greater than Grand Total");
+
+        document.getElementById("amountPaid").value = grandTotal;
+
+        amountPaid = grandTotal;
+    }
+
+    let balance = grandTotal - amountPaid;
+
+    document.getElementById("balanceAmount").value = balance;
+
 }
 
 function deleteRow(button){
@@ -324,27 +445,185 @@ function deleteRow(button){
 
 function savePurchase(){
 
+    let invoice = document.getElementById("invoice").value.trim();
+    let date = document.getElementById("purchaseDate").value;
+    let vendor = document.getElementById("vendor").value;
+    let college = document.getElementById("college").value;
+    let category = document.getElementById("category").value;
+    let purpose = document.getElementById("purpose").value.trim();
+    let particulars = document.getElementById("particulars").value.trim();
+
+    let grandTotal =
+        Number(document.getElementById("grandTotal").innerText) || 0;
+
+    let amountPaid =
+        Number(document.getElementById("amountPaid").value) || 0;
+
+    let balanceAmount =
+        Number(document.getElementById("balanceAmount").value) || 0;
+
+    let paymentStatus =
+        document.getElementById("paymentStatus").value;
+
+    let remarks =
+        document.getElementById("remarks").value.trim();
+
+
+    // Validation
+
+    if(invoice === ""){
+
+        alert("Please Enter Invoice No.");
+        return;
+
+    }
+
+    if(date === ""){
+
+        alert("Please Select Purchase Date");
+        return;
+
+    }
+
+    if(vendor === ""){
+
+        alert("Please Select Vendor");
+        return;
+
+    }
+
+    if(college === ""){
+
+        alert("Please Select College");
+        return;
+
+    }
+
+    if(category === ""){
+
+        alert("Please Select Category");
+        return;
+
+    }
+
+    if(grandTotal <= 0){
+
+        alert("Please Enter Purchase Item and Rate");
+        return;
+
+    }
+
+
+    // Collect Purchase Items
+
+    let items = [];
+
+    let rows =
+        document.querySelectorAll("#purchaseTable tr");
+
+
+    rows.forEach(function(row, index){
+
+        if(index === 0) return;
+
+        let itemSelect = row.querySelector("select");
+
+        let qtyBox = row.querySelector(".qty");
+
+        let rateBox = row.querySelector(".rate");
+
+        let totalBox = row.querySelector(".total");
+
+
+        if(itemSelect && qtyBox && rateBox && totalBox){
+
+            items.push({
+
+                item: itemSelect.value,
+
+                quantity: Number(qtyBox.value) || 0,
+
+                rate: Number(rateBox.value) || 0,
+
+                total: Number(totalBox.value) || 0
+
+            });
+
+        }
+
+    });
+
+
+    // Complete Purchase Object
+
     let purchase = {
 
-        invoice : document.getElementById("invoice").value,
+        invoice: invoice,
 
-        date : document.getElementById("purchaseDate").value,
+        date: date,
 
-        vendor : document.getElementById("vendor").value,
+        vendor: vendor,
 
-        college : document.getElementById("college").value,
+        college: college,
 
-        grandTotal : document.getElementById("grandTotal").innerText
+        category: category,
+
+        purpose: purpose,
+
+        particulars: particulars,
+
+        items: items,
+
+        grandTotal: grandTotal,
+
+        amountPaid: amountPaid,
+
+        balanceAmount: balanceAmount,
+
+        paymentStatus: paymentStatus,
+
+        remarks: remarks
 
     };
 
-    let purchases = JSON.parse(localStorage.getItem("purchases")) || [];
+
+    // Get Existing Purchases
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+
+    // Save New Purchase
 
     purchases.push(purchase);
 
-    localStorage.setItem("purchases", JSON.stringify(purchases));
+
+    localStorage.setItem(
+        "purchases",
+        JSON.stringify(purchases)
+    );
+
 
     alert("✅ Purchase Saved Successfully");
+
+
+    // Clear Form
+
+    document.getElementById("invoice").value = "";
+
+    document.getElementById("purchaseDate").value = "";
+
+    document.getElementById("purpose").value = "";
+
+    document.getElementById("particulars").value = "";
+
+    document.getElementById("amountPaid").value = "0";
+
+    document.getElementById("balanceAmount").value = "0";
+
+    document.getElementById("paymentStatus").value = "";
+
+    document.getElementById("remarks").value = "";
 
 }
 

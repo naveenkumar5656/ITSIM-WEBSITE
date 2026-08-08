@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ITSIM - Purchase / Bill Register</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#0066cc;
+    color:white;
+    padding:18px 30px;
+    font-size:26px;
+    font-weight:bold;
+}
+
+.container{
+    width:94%;
+    margin:25px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.15);
+}
+
+h2{
+    margin-top:0;
+    color:#0066cc;
+}
+
+.filter-box{
+    border:1px solid #ddd;
+    padding:20px;
+    border-radius:8px;
+    background:#fafafa;
+}
+
+.filter-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+}
+
+.field label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.field select,
+.field input{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:14px;
+}
+
+.button-area{
+    margin-top:20px;
+}
+
+button{
+    border:none;
+    padding:11px 20px;
+    border-radius:5px;
+    color:white;
+    cursor:pointer;
+    margin-right:10px;
+    font-size:14px;
+}
+
+.search-btn{
+    background:#0066cc;
+}
+
+.reset-btn{
+    background:#6c757d;
+}
+
+.print-btn{
+    background:#28a745;
+}
+
+.back-btn{
+    background:#343a40;
+}
+
+.table-container{
+    margin-top:25px;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1500px;
+}
+
+th{
+    background:#0066cc;
+    color:white;
+    padding:12px 8px;
+    border:1px solid #ddd;
+    font-size:13px;
+}
+
+td{
+    padding:10px 8px;
+    border:1px solid #ddd;
+    text-align:center;
+    font-size:13px;
+}
+
+tbody tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+.total-row{
+    font-weight:bold;
+    background:#e9ecef;
+}
+
+@media(max-width:900px){
+
+    .filter-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media print{
+
+    body{
+        background:white;
+    }
+
+    .header{
+        background:white;
+        color:black;
+        border-bottom:2px solid #000;
+    }
+
+    .filter-box,
+    .button-area{
+        display:none;
+    }
+
+    .container{
+        width:100%;
+        margin:0;
+        padding:10px;
+        box-shadow:none;
+    }
+
+    table{
+        min-width:0;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    ITSIM - Purchase / Bill Register
+</div>
+
+
+<div class="container">
+
+<h2>Purchase / Bill Register</h2>
+
+
+<!-- FILTER SECTION -->
+
+<div class="filter-box">
+
+<div class="filter-grid">
+
+
+<!-- Unit -->
+
+<div class="field">
+
+<label>Unit</label>
+
+<select id="unit">
+
+<option value="">All</option>
+<option>KSRCT</option>
+<option>KSRCE</option>
+<option>KSR College of Arts & Science</option>
+
+</select>
+
+</div>
+
+
+<!-- From Date -->
+
+<div class="field">
+
+<label>From Date</label>
+
+<input
+type="date"
+id="fromDate">
+
+</div>
+
+
+<!-- To Date -->
+
+<div class="field">
+
+<label>To Date</label>
+
+<input
+type="date"
+id="toDate">
+
+</div>
+
+
+<!-- Vendor -->
+
+<div class="field">
+
+<label>Vendor / Company</label>
+
+<select id="vendor">
+
+<option value="">All</option>
+
+</select>
+
+</div>
+
+
+<!-- Category -->
+
+<div class="field">
+
+<label>Category</label>
+
+<select id="category">
+
+<option value="">All</option>
+
+</select>
+
+</div>
+
+
+<!-- Status -->
+
+<div class="field">
+
+<label>Payment Status</label>
+
+<select id="status">
+
+<option value="">All</option>
+<option>Paid</option>
+<option>Partial</option>
+<option>Pending</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<div class="button-area">
+
+<button
+class="search-btn"
+onclick="searchRegister()">
+🔍 Search
+</button>
+
+<button
+class="reset-btn"
+onclick="resetRegister()">
+🔄 Reset
+</button>
+
+<button
+class="print-btn"
+onclick="window.print()">
+🖨️ Print
+</button>
+
+<button
+class="back-btn"
+onclick="window.location.href='dashboard.html'">
+⬅ Back
+</button>
+
+</div>
+
+</div>
+
+
+<!-- REPORT TABLE -->
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>S.No</th>
+
+<th>Unit / College</th>
+
+<th>Invoice No.</th>
+
+<th>Invoice Date</th>
+
+<th>Vendor / Company</th>
+
+<th>Particulars of Invoice</th>
+
+<th>Purpose / Place</th>
+
+<th>Material Purchased</th>
+
+<th>Bill Amount</th>
+
+<th>Amount Paid</th>
+
+<th>Balance Amount</th>
+
+<th>Remarks</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="purchaseRegisterTable">
+
+</tbody>
+
+
+<tfoot>
+
+<tr class="total-row">
+
+<td colspan="8">
+TOTAL
+</td>
+
+<td id="totalBill">
+0.00
+</td>
+
+<td id="totalPaid">
+0.00
+</td>
+
+<td id="totalBalance">
+0.00
+</td>
+
+<td></td>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+</div>
+
+</div>
+
+
+<script>
+
+function loadPurchaseRegister(){
+
+    let table = document.getElementById("purchaseRegisterTable");
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    table.innerHTML = "";
+
+    let totalBill = 0;
+    let totalPaid = 0;
+    let totalBalance = 0;
+
+    purchases.forEach(function(purchase, index){
+
+        let material = "";
+
+        if(purchase.items && purchase.items.length > 0){
+
+            material = purchase.items.map(function(item){
+
+                return item.item + " (" +
+                       item.quantity + " × ₹" +
+                       item.rate + ")";
+
+            }).join("<br>");
+
+        }
+
+        table.innerHTML += `
+        <tr>
+
+            <td>${index + 1}</td>
+            <td>${purchase.college || ""}</td>
+            <td>${purchase.invoice || ""}</td>
+            <td>${purchase.date || ""}</td>
+            <td>${purchase.vendor || ""}</td>
+            <td>${purchase.particulars || ""}</td>
+            <td>${purchase.purpose || ""}</td>
+            <td>${material}</td>
+
+            <td>₹${Number(purchase.grandTotal || 0).toFixed(2)}</td>
+
+            <td>₹${Number(purchase.amountPaid || 0).toFixed(2)}</td>
+
+            <td>₹${Number(purchase.balanceAmount || 0).toFixed(2)}</td>
+
+            <td>${purchase.remarks || ""}</td>
+
+        </tr>
+        `;
+
+        totalBill += Number(purchase.grandTotal || 0);
+        totalPaid += Number(purchase.amountPaid || 0);
+        totalBalance += Number(purchase.balanceAmount || 0);
+
+    });
+
+    document.getElementById("totalBill").innerText =
+        "₹" + totalBill.toFixed(2);
+
+    document.getElementById("totalPaid").innerText =
+        "₹" + totalPaid.toFixed(2);
+
+    document.getElementById("totalBalance").innerText =
+        "₹" + totalBalance.toFixed(2);
+
+}
+
+function searchRegister(){
+
+    let unit =
+        document.getElementById("unit").value;
+
+    let vendor =
+    document.getElementById("vendor").value;
+
+    let fromDate =
+        document.getElementById("fromDate").value;
+
+    let toDate =
+        document.getElementById("toDate").value;
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+
+    let filteredPurchases = purchases.filter(function(purchase){
+
+        // UNIT FILTER
+        if(unit !== "" && purchase.college !== unit){
+            return false;
+        }
+    
+        // VENDOR FILTER
+    if(vendor !== "" && purchase.vendor !== vendor){
+           return false;
+}
+
+        // FROM DATE FILTER
+        if(fromDate !== "" && purchase.date < fromDate){
+            return false;
+        }
+
+
+        // TO DATE FILTER
+        if(toDate !== "" && purchase.date > toDate){
+            return false;
+        }
+
+
+        return true;
+
+    });
+
+
+    displayPurchaseRegister(filteredPurchases);
+
+}
+function displayPurchaseRegister(purchases){
+
+    let table =
+        document.getElementById("purchaseRegisterTable");
+
+    table.innerHTML = "";
+
+    let totalBill = 0;
+    let totalPaid = 0;
+    let totalBalance = 0;
+
+
+    purchases.forEach(function(purchase, index){
+
+        let material = "";
+
+        if(purchase.items && purchase.items.length > 0){
+
+            material = purchase.items.map(function(item){
+
+                return item.item + " (" +
+                       item.quantity + " × ₹" +
+                       item.rate + ")";
+
+            }).join("<br>");
+
+        }
+
+
+        table.innerHTML += `
+        <tr>
+
+            <td>${index + 1}</td>
+
+            <td>${purchase.college || ""}</td>
+
+            <td>${purchase.invoice || ""}</td>
+
+            <td>${purchase.date || ""}</td>
+
+            <td>${purchase.vendor || ""}</td>
+
+            <td>${purchase.particulars || ""}</td>
+
+            <td>${purchase.purpose || ""}</td>
+
+            <td>${material}</td>
+
+            <td>₹${Number(purchase.grandTotal || 0).toFixed(2)}</td>
+
+            <td>₹${Number(purchase.amountPaid || 0).toFixed(2)}</td>
+
+            <td>₹${Number(purchase.balanceAmount || 0).toFixed(2)}</td>
+
+            <td>${purchase.remarks || ""}</td>
+
+        </tr>
+        `;
+
+
+        totalBill += Number(purchase.grandTotal || 0);
+
+        totalPaid += Number(purchase.amountPaid || 0);
+
+        totalBalance += Number(purchase.balanceAmount || 0);
+
+    });
+
+
+    document.getElementById("totalBill").innerText =
+        "₹" + totalBill.toFixed(2);
+
+    document.getElementById("totalPaid").innerText =
+        "₹" + totalPaid.toFixed(2);
+
+    document.getElementById("totalBalance").innerText =
+        "₹" + totalBalance.toFixed(2);
+
+}
+
+
+function resetRegister(){
+
+    document.getElementById("unit").value = "";
+
+    document.getElementById("fromDate").value = "";
+
+    document.getElementById("toDate").value = "";
+
+    document.getElementById("vendor").value = "";
+
+    document.getElementById("category").value = "";
+
+    document.getElementById("status").value = "";
+
+}
+
+function loadVendorFilter(){
+
+    let vendorDropdown =
+        document.getElementById("vendor");
+
+    if(!vendorDropdown) return;
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let vendors = [];
+
+    purchases.forEach(function(purchase){
+
+        let vendor = purchase.vendor;
+
+        if(vendor && !vendors.includes(vendor)){
+            vendors.push(vendor);
+        }
+
+    });
+
+    vendorDropdown.innerHTML =
+        '<option value="">All</option>';
+
+    vendors.forEach(function(vendor){
+
+        vendorDropdown.innerHTML += `
+            <option value="${vendor}">
+                ${vendor}
+            </option>
+        `;
+
+    });
+
+}
+
+window.addEventListener("load", function(){
+
+    loadPurchaseRegister();
+
+    loadVendorFilter();
+
+});
+
+</script>
+
+
+</body>
+</html>

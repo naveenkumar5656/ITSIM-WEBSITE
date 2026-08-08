@@ -576,6 +576,7 @@ function loadItemCategory(){
     categories.forEach(function(category){
 
         dropdown.innerHTML += `
+        
         <option value="${category}">
             ${category}
         </option>`;
