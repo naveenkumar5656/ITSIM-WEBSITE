@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Category Master</title>
+
+<style>
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.header{
+    background:#0066cc;
+    color:white;
+    padding:18px;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.container{
+    width:80%;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+button{
+    background:#28a745;
+    color:white;
+    padding:12px 25px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+table{
+    width:100%;
+    margin-top:25px;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+}
+
+th{
+    background:#0066cc;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+ITSIM - Category Master
+</div>
+
+<div class="container">
+
+<h2>Add Category</h2>
+
+<input
+type="text"
+id="categoryName"
+placeholder="Enter Category Name">
+
+<button onclick="saveCategory()">Save Category</button>
+
+<button onclick="history.back()" style="background:#dc3545;margin-left:10px;">
+    🔙 Back
+</button>
+
+<button onclick="deleteCategory()" style="background:red;margin-left:10px;">
+    🗑 Delete
+</button>
+
+<table>
+
+<tr>
+<th>S.No</th>
+<th>Category Name</th>
+</tr>
+
+<tbody id="categoryTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

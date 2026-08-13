@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Purchase Entry</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#0066cc;
+    color:white;
+    padding:20px;
+}
+
+.main{
+    padding:30px;
+}
+
+.form-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+input,select{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    margin-top:25px;
+    padding:12px 25px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>🛒 Purchase Entry</h2>
+
+</div>
+
+<div class="main">
+
+<div class="form-box">
+
+<div class="grid">
+
+<div class="group">
+<label>College</label>
+<select id="college">
+<option>KSRCE</option>
+<option>KSRCT</option>
+<option>KSRCAS</option>
+</select>
+</div>
+
+<div class="group">
+<label>Invoice No</label>
+<input type="text" id="invoice" placeholder="Enter Invoice No">
+</div>
+
+<div class="group">
+<label>PO No</label>
+<input type="text" id="poNo" placeholder="Enter PO No">
+</div>
+
+<div class="group">
+<label>Purchase Date</label>
+<input type="date" id="purchaseDate">
+</div>
+
+<div class="group">
+<label>Vendor</label>
+<select id="vendor">
+<option>Prime Technologies</option>
+<option>Dell</option>
+<option>HP</option>
+</select>
+</div>
+
+<div class="group">
+<label>Category</label>
+<select id="category">
+<option value="">-- Select Category --</option>
+</select>
+</div>
+
+<div class="group">
+<label>Purpose / Place</label>
+<input type="text" id="purpose" placeholder="Enter Purpose / Place">
+</div>
+
+<div class="group">
+<label>Particulars of Invoice</label>
+<input type="text" id="particulars" placeholder="Enter Particulars of Invoice">
+</div>
+
+<div class="group" style="justify-content:end;">
+<label>&nbsp;</label>
+<button type="button" onclick="addRow()" style="margin-top:0;width:100%;">➕ Add Items</button>
+</div>
+
+</div>
+<hr><br>
+
+<h3>Purchase Items</h3>
+
+<table id="purchaseTable" border="1" width="100%" cellspacing="0" cellpadding="8">
+
+<tr style="background:#0066cc;color:white;">
+
+<th>Item</th>
+
+<th>Quantity</th>
+
+<th>Rate</th>
+
+<th>Total</th>
+
+<th>Action</th>
+
+</tr>
+
+<tr id="firstRow">
+
+<td>
+
+<select>
+
+<option>Mouse</option>
+<option>Keyboard</option>
+<option>Monitor</option>
+<option>Desktop</option>
+<option>Laptop</option>
+
+</select>
+
+</td>
+
+<td>
+
+<input type="number" value="1" class="qty" onkeyup="calculateTotal(this)">
+
+</td>
+
+<td>
+
+<input type="number" class="rate" onkeyup="calculateTotal(this)">
+
+</td>
+
+<td>
+
+<input type="number" class="total" readonly>
+
+</td>
+
+<td>
+
+<button type="button" onclick="deleteRow(this)">🗑 Delete</button>
+
+</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<button type="button" onclick="addRow()">➕ Add Another Item</button>
+
+<br><br>
+
+<h2>
+
+Grand Total : ₹ <span id="grandTotal">0</span>
+
+</h2>
+
+<div style="margin-top:20px;">
+
+    <label>Amount Paid</label>
+
+    <input
+        type="number"
+        id="amountPaid"
+        value="0"
+        min="0"
+        placeholder="Enter Amount Paid"
+        oninput="calculateBalance()"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+    <label>Balance Amount</label>
+
+    <input
+        type="number"
+        id="balanceAmount"
+        value="0"
+        readonly
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box; background:#f1f1f1;"
+    >
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+<label>Payment Status</label>
+
+<input
+    type="text"
+    id="paymentStatus"
+    value="Pending"
+    readonly
+    style="width:100%;
+           padding:10px;
+           margin-top:8px;
+           box-sizing:border-box;
+           background:#f1f1f1;
+           font-weight:bold;">
+
+     <label style="display:block; margin-top:15px;">
+    Material Status
+</label>
+
+<select
+    id="materialStatus"
+    style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;">
+
+    <option value="">-- Select Material Status --</option>
+    <option value="Received">RECEIVED</option>
+    <option value="Partially Received">PARTIALLY RECEIVED</option>
+    <option value="Pending">PENDING</option>
+
+</select>
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+    <label>Gate Entry Date</label>
+    <input
+        type="date"
+        id="gateEntryDate"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
+
+<div style="margin-top:15px;">
+
+    <label>Gate Verified By</label>
+    <input
+        type="text"
+        id="gateEntryPerson"
+        placeholder="Enter Gate Entry Person Name"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
+
+<div style="margin-top:15px;">
+
+    <label>Purchase Verified By</label>
+    <input
+        type="text"
+        id="purchaseEntryPerson"
+        placeholder="Enter Purchase Entry Person Name"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
+
+<div style="margin-top:15px;">
+
+    <label>Bill Status</label>
+    <select
+        id="billStatus"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;">
+        <option value="">-- Select Bill Status --</option>
+        <option value="Gate">GATE</option>
+        <option value="Purchase">PURCHASE</option>
+        <option value="Passed">PASSED</option>
+    </select>
+
+</div>
+
+<div style="margin-top:15px;">
+
+    <label>Remarks</label>
+
+    <input
+        type="text"
+        id="remarks"
+        placeholder="Enter Remarks"
+        style="width:100%; padding:10px; margin-top:8px; box-sizing:border-box;"
+    >
+
+</div>
+
+<button type="button" onclick="savePurchase()">💾 Save Purchase</button>
+
+</div>
+
+</div>
+
+<script>
+
+function calculateTotal(element){
+
+    let row = element.parentElement.parentElement;
+
+    let qty = row.querySelector(".qty").value;
+    let rate = row.querySelector(".rate").value;
+
+    qty = Number(qty);
+    rate = Number(rate);
+
+    row.querySelector(".total").value = qty * rate;
+
+    calculateGrandTotal();
+
+}
+
+function addRow(){
+
+    let table = document.getElementById("purchaseTable");
+
+    let row = table.insertRow(-1);
+
+    row.innerHTML = `
+
+    <td>
+
+        <select>
+
+            <option>Mouse</option>
+            <option>Keyboard</option>
+            <option>Monitor</option>
+            <option>Desktop</option>
+            <option>Laptop</option>
+
+        </select>
+
+    </td>
+
+    <td>
+
+        <input type="number" value="1"
+        class="qty"
+        onkeyup="calculateTotal(this)">
+
+    </td>
+
+    <td>
+
+        <input type="number"
+        class="rate"
+        onkeyup="calculateTotal(this)">
+
+    </td>
+
+    <td>
+
+        <input type="number"
+        class="total"
+        readonly>
+
+    </td>
+
+    <td>
+
+<button type="button" onclick="deleteRow(this)">🗑 Delete</button>
+
+</td>
+
+    `;
+
+}
+
+function calculateGrandTotal(){
+
+    let totals = document.querySelectorAll(".total");
+
+    let grand = 0;
+
+    totals.forEach(function(box){
+
+        grand += Number(box.value);
+
+    });
+
+    document.getElementById("grandTotal").innerText = grand;
+
+    calculateBalance();
+
+}
+
+
+function calculateBalance(){
+
+    let grandTotal =
+        Number(document.getElementById("grandTotal").innerText) || 0;
+
+    let amountPaid =
+        Number(document.getElementById("amountPaid").value) || 0;
+
+    if(amountPaid > grandTotal){
+
+        alert("Amount Paid cannot be greater than Grand Total");
+
+        document.getElementById("amountPaid").value = grandTotal;
+
+        amountPaid = grandTotal;
+    }
+
+    let balance = grandTotal - amountPaid;
+
+    let paymentStatus =
+    document.getElementById("paymentStatus");
+
+if(amountPaid === 0){
+
+    paymentStatus.value = "Pending";
+
+}
+else if(amountPaid < grandTotal){
+
+    paymentStatus.value = "Partial";
+
+}
+else if(amountPaid === grandTotal){
+
+    paymentStatus.value = "Paid";
+
+}
+
+    document.getElementById("balanceAmount").value = balance;
+
+}
+
+function deleteRow(button){
+
+    let table = document.getElementById("purchaseTable");
+
+    if(table.rows.length <= 2){
+
+        alert("At least one item is required.");
+
+        return;
+
+    }
+
+    let row = button.parentElement.parentElement;
+
+    row.remove();
+
+    calculateGrandTotal();
+
+}
+
+function resetPurchaseItems(){
+
+    let table = document.getElementById("purchaseTable");
+
+    while(table.rows.length > 2){
+        table.deleteRow(2);
+    }
+
+    let firstRow = document.getElementById("firstRow");
+
+    if(firstRow){
+        firstRow.querySelector("select").selectedIndex = 0;
+        firstRow.querySelector(".qty").value = 1;
+        firstRow.querySelector(".rate").value = "";
+        firstRow.querySelector(".total").value = "";
+    }
+
+    document.getElementById("grandTotal").innerText = "0";
+}
+
+function savePurchase(){
+
+    let invoice = document.getElementById("invoice").value.trim();
+    let poNo = document.getElementById("poNo").value.trim();
+    let date = document.getElementById("purchaseDate").value;
+    let vendor = document.getElementById("vendor").value;
+    let college = document.getElementById("college").value;
+    let category = document.getElementById("category").value;
+    let purpose = document.getElementById("purpose").value.trim();
+    let particulars = document.getElementById("particulars").value.trim();
+
+    let grandTotal =
+        Number(document.getElementById("grandTotal").innerText) || 0;
+
+    let amountPaid =
+        Number(document.getElementById("amountPaid").value) || 0;
+
+    let balanceAmount =
+        Number(document.getElementById("balanceAmount").value) || 0;
+
+    let paymentStatus =
+    document.getElementById("paymentStatus").value;
+
+    let materialStatus =
+    document.getElementById("materialStatus").value;
+
+    let remarks =
+        document.getElementById("remarks").value.trim();
+
+
+    // Validation
+
+    if(invoice === ""){
+
+        alert("Please Enter Invoice No.");
+        return;
+
+    }
+
+    if(date === ""){
+
+        alert("Please Select Purchase Date");
+        return;
+
+    }
+
+    if(vendor === ""){
+
+        alert("Please Select Vendor");
+        return;
+
+    }
+
+    if(college === ""){
+
+        alert("Please Select College");
+        return;
+
+    }
+
+    if(category === ""){
+
+        alert("Please Select Category");
+        return;
+
+    }
+
+    if(grandTotal <= 0){
+
+        alert("Please Enter Purchase Item and Rate");
+        return;
+
+    }
+
+
+    // Collect Purchase Items
+
+    let items = [];
+
+    let rows =
+        document.querySelectorAll("#purchaseTable tr");
+
+
+    rows.forEach(function(row, index){
+
+        if(index === 0) return;
+
+        let itemSelect = row.querySelector("select");
+
+        let qtyBox = row.querySelector(".qty");
+
+        let rateBox = row.querySelector(".rate");
+
+        let totalBox = row.querySelector(".total");
+
+
+        if(itemSelect && qtyBox && rateBox && totalBox){
+
+            items.push({
+
+                item: itemSelect.value,
+
+                quantity: Number(qtyBox.value) || 0,
+
+                rate: Number(rateBox.value) || 0,
+
+                total: Number(totalBox.value) || 0
+
+            });
+
+        }
+
+    });
+
+
+    // Complete Purchase Object
+
+    let purchase = {
+
+        invoice: invoice,
+
+        poNo: poNo,
+
+        date: date,
+
+        gateEntryDate: document.getElementById("gateEntryDate").value,
+        gateEntryPerson: document.getElementById("gateEntryPerson").value.trim(),
+        purchaseEntryPerson: document.getElementById("purchaseEntryPerson").value.trim(),
+        billStatus: document.getElementById("billStatus").value,
+
+        vendor: vendor,
+
+        college: college,
+
+        category: category,
+
+        purpose: purpose,
+
+        particulars: particulars,
+
+        items: items,
+
+        grandTotal: grandTotal,
+
+        amountPaid: amountPaid,
+
+        balanceAmount: balanceAmount,
+
+        paymentStatus: paymentStatus,
+
+        materialStatus: materialStatus,
+
+        remarks: remarks
+
+    };
+
+// Get Existing Purchases
+
+let purchases =
+    JSON.parse(localStorage.getItem("purchases")) || [];
+
+
+// Check Edit Mode
+
+let editData =
+    localStorage.getItem("editPurchase");
+
+
+if(editData){
+
+    let oldPurchase =
+        JSON.parse(editData);
+
+    let editIndex =
+        purchases.findIndex(function(item){
+
+            return item.invoice === oldPurchase.invoice;
+
+        });
+
+
+    if(editIndex !== -1){
+
+        // Update Existing Purchase
+
+        purchases[editIndex] = purchase;
+
+    }else{
+
+        // If old record not found, save as new
+
+        purchases.push(purchase);
+
+    }
+
+
+    // Clear Edit Mode
+
+    localStorage.removeItem("editPurchase");
+
+
+}else{
+
+    // Normal New Purchase
+
+    purchases.push(purchase);
+
+}
+
+
+localStorage.setItem(
+    "purchases",
+    JSON.stringify(purchases)
+);
+
+
+    alert("✅ Purchase Saved Successfully");
+
+
+    // Clear Form
+
+    document.getElementById("invoice").value = "";
+    document.getElementById("poNo").value = "";
+    document.getElementById("purchaseDate").value = "";
+    document.getElementById("gateEntryDate").value = "";
+    document.getElementById("gateEntryPerson").value = "";
+    document.getElementById("purchaseEntryPerson").value = "";
+    document.getElementById("billStatus").value = "";
+
+    document.getElementById("purpose").value = "";
+
+    document.getElementById("particulars").value = "";
+
+    document.getElementById("amountPaid").value = "0";
+
+    document.getElementById("balanceAmount").value = "0";
+
+    document.getElementById("paymentStatus").value = "Pending";
+
+    document.getElementById("remarks").value = "";
+
+    resetPurchaseItems();
+
+}
+
+window.addEventListener("load", function(){
+
+    let editData =
+        localStorage.getItem("editPurchase");
+
+    if(!editData){
+        return;
+    }
+
+    let purchase =
+        JSON.parse(editData);
+
+    console.log("Edit Purchase Data:", purchase);
+   
+    // Fill existing purchase details
+
+document.getElementById("invoice").value =
+    purchase.invoice || "";
+
+document.getElementById("poNo").value =
+    purchase.poNo || "";
+
+document.getElementById("purchaseDate").value =
+    purchase.date || "";
+
+document.getElementById("gateEntryDate").value =
+    purchase.gateEntryDate || "";
+
+document.getElementById("gateEntryPerson").value =
+    purchase.gateEntryPerson || "";
+
+document.getElementById("purchaseEntryPerson").value =
+    purchase.purchaseEntryPerson || "";
+
+document.getElementById("billStatus").value =
+    purchase.billStatus || "";
+
+document.getElementById("vendor").value =
+    purchase.vendor || "";
+
+document.getElementById("college").value =
+    purchase.college || "";
+
+document.getElementById("category").value =
+    purchase.category || "";
+
+document.getElementById("purpose").value =
+    purchase.purpose || "";
+
+document.getElementById("particulars").value =
+    purchase.particulars || "";
+
+document.getElementById("amountPaid").value =
+    purchase.amountPaid || 0;
+
+document.getElementById("balanceAmount").value =
+    purchase.balanceAmount || 0;
+
+document.getElementById("paymentStatus").value =
+    purchase.paymentStatus || "Pending";
+
+document.getElementById("materialStatus").value =
+    purchase.materialStatus || "";
+
+document.getElementById("remarks").value =
+    purchase.remarks || "";
+
+// Load existing purchase items
+
+if(purchase.items && purchase.items.length > 0){
+
+    let table =
+        document.getElementById("purchaseTable");
+
+    // Clear existing item rows except first row
+    while(table.rows.length > 2){
+        table.deleteRow(2);
+    }
+
+    purchase.items.forEach(function(item, index){
+
+        let row;
+
+        if(index === 0){
+
+            row =
+                document.getElementById("firstRow");
+
+        }else{
+
+            addRow();
+
+            row =
+                table.rows[table.rows.length - 1];
+
+        }
+
+        let itemSelect =
+            row.querySelector("select");
+
+        let qtyBox =
+            row.querySelector(".qty");
+
+        let rateBox =
+            row.querySelector(".rate");
+
+        let totalBox =
+            row.querySelector(".total");
+
+
+        if(itemSelect){
+            itemSelect.value =
+                item.item || "";
+        }
+
+        if(qtyBox){
+            qtyBox.value =
+                item.quantity || 0;
+        }
+
+        if(rateBox){
+            rateBox.value =
+                item.rate || 0;
+        }
+
+        if(totalBox){
+            totalBox.value =
+                item.total || 0;
+        }
+
+    });
+
+    calculateGrandTotal();
+
+}
+
+});
+
+</script>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

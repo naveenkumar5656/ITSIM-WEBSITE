@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>View Purchase</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f4f6f9;
+}
+
+.header{
+background:#0066cc;
+color:white;
+padding:20px;
+}
+
+.container{
+width:95%;
+margin:20px auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+input{
+padding:10px;
+width:300px;
+margin-bottom:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:left;
+}
+
+th{
+background:#0066cc;
+color:white;
+}
+
+button{
+padding:8px 15px;
+background:red;
+color:white;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+
+.total{
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>🛒 View Purchase</h2>
+
+</div>
+
+<div class="container">
+
+<input
+type="text"
+id="search"
+placeholder="Search Invoice / Vendor"
+onkeyup="searchPurchase()">
+
+<table id="purchaseTable">
+
+<tr>
+
+<th>Invoice</th>
+<th>Date</th>
+<th>Vendor</th>
+<th>College</th>
+<th>Grand Total</th>
+<th>Action</th>
+
+</tr>
+
+</table>
+
+<div class="total">
+
+Total Purchases :
+<span id="totalPurchase">0</span>
+
+</div>
+
+</div>
+
+<script>
+
+loadPurchases();
+
+function loadPurchases(){
+
+let purchases=JSON.parse(localStorage.getItem("purchases"))||[];
+
+let table=document.getElementById("purchaseTable");
+
+document.getElementById("totalPurchase").innerText=purchases.length;
+
+purchases.forEach(function(p,index){
+
+let row=table.insertRow(-1);
+
+row.innerHTML=`
+
+<td>${p.invoice}</td>
+
+<td>${p.date}</td>
+
+<td>${p.vendor}</td>
+
+<td>${p.college}</td>
+
+<td>₹ ${p.grandTotal}</td>
+
+<td>
+
+<button onclick="deletePurchase(${index})">
+
+Delete
+
+</button>
+
+</td>
+
+`;
+
+});
+
+}
+
+function deletePurchase(index){
+
+let purchases=JSON.parse(localStorage.getItem("purchases"))||[];
+
+purchases.splice(index,1);
+
+localStorage.setItem("purchases",JSON.stringify(purchases));
+
+location.reload();
+
+}
+
+function searchPurchase(){
+
+let input=document.getElementById("search").value.toUpperCase();
+
+let table=document.getElementById("purchaseTable");
+
+let tr=table.getElementsByTagName("tr");
+
+for(let i=1;i<tr.length;i++){
+
+let td1=tr[i].getElementsByTagName("td")[0];
+
+let td2=tr[i].getElementsByTagName("td")[2];
+
+if(td1||td2){
+
+let txt1=td1.textContent.toUpperCase();
+
+let txt2=td2.textContent.toUpperCase();
+
+if(txt1.indexOf(input)>-1 || txt2.indexOf(input)>-1){
+
+tr[i].style.display="";
+
+}
+
+else{
+
+tr[i].style.display="none";
+
+}
+
+}
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

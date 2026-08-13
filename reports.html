@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITSIM - Purchase Reports</title>
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f9}
+.header{background:#0066cc;color:#fff;padding:18px 30px;font-size:26px;font-weight:bold}
+.container{width:94%;margin:25px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.15)}
+h2{color:#0066cc;margin-top:0}
+.filter-box{border:1px solid #ddd;padding:20px;border-radius:8px;background:#fafafa}
+.filter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.field label{display:block;font-weight:bold;margin-bottom:7px}
+.field input,.field select{width:100%;box-sizing:border-box;padding:10px;border:1px solid #ccc;border-radius:5px}
+.buttons{margin-top:20px}
+button{border:0;border-radius:5px;padding:11px 20px;color:#fff;cursor:pointer;margin-right:10px}
+.search{background:#0066cc}.reset{background:#6c757d}.print{background:#28a745}.back{background:#343a40}
+.count{margin-top:20px;padding:12px;background:#e9f2ff;border-left:5px solid #0066cc;font-weight:bold;color:#0066cc}
+.table-wrap{margin-top:18px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:2200px}
+th{background:#0066cc;color:#fff;padding:10px;border:1px solid #ddd;font-size:12px}
+td{padding:9px;border:1px solid #ddd;text-align:center;font-size:12px}
+tfoot td{background:#e9ecef;font-weight:bold}
+@media(max-width:900px){.filter-grid{grid-template-columns:1fr}}
+@media print{
+ body{background:#fff}.header{background:#fff;color:#000;border-bottom:2px solid #000}
+ .filter-box,.buttons,.count{display:none}.container{width:100%;margin:0;padding:8px;box-shadow:none}
+ table{min-width:0}th,td{font-size:8px;padding:4px}
+}
+</style>
+</head>
+<body>
+<div class="header">ITSIM - Purchase Reports</div>
+<div class="container">
+<h2>Purchase Reports</h2>
+
+<div class="filter-box">
+<div class="filter-grid">
+<div class="field"><label>Unit / College</label><select id="reportUnit"><option value="">All</option><option>KSRCT</option><option>KSRCE</option><option>KSRCAS</option></select></div>
+<div class="field"><label>From Date</label><input type="date" id="reportFromDate"></div>
+<div class="field"><label>To Date</label><input type="date" id="reportToDate"></div>
+<div class="field"><label>Vendor / Company</label><select id="reportVendor"><option value="">All</option></select></div>
+<div class="field"><label>Category</label><select id="reportCategory"><option value="">All</option></select></div>
+<div class="field"><label>Department</label><select id="reportDepartment"><option value="">All</option></select></div>
+<div class="field"><label>Payment Status</label><select id="reportPaymentStatus"><option value="">All</option><option>Pending</option><option>Partial</option><option>Paid</option></select></div>
+<div class="field"><label>Material Status</label><select id="reportMaterialStatus"><option value="">All</option><option>Received</option><option>Partially Received</option><option>Pending</option></select></div>
+<div class="field"><label>Bill Status</label><select id="reportBillStatus"><option value="">All</option><option value="Gate">GATE</option><option value="Purchase">PURCHASE</option><option value="Passed">PASSED</option></select></div>
+</div>
+<div class="buttons">
+<button class="search" onclick="runReport()">🔍 Search</button>
+<button class="reset" onclick="resetReport()">🔄 Reset</button>
+<button class="print" onclick="window.print()">🖨️ Print</button>
+<button class="back" onclick="window.location.href='dashboard.html'">⬅ Back</button>
+</div>
+</div>
+
+<div class="count" id="reportCount">Showing Records: 0</div>
+
+<div class="table-wrap">
+<table>
+<thead><tr>
+<th>S.No</th><th>Unit / College</th><th>Invoice No.</th><th>PO No.</th><th>Invoice Date</th>
+<th>Vendor / Company</th><th>Category</th><th>Department</th><th>Particulars</th><th>Purpose / Place</th>
+<th>Material Purchased</th><th>Bill Amount</th><th>Amount Paid</th><th>Balance Amount</th>
+<th>Payment Status</th><th>Material Status</th><th>Gate Entry Date</th><th>Gate Verified By</th>
+<th>Purchase Verified By</th><th>Bill Status</th><th>Remarks</th>
+</tr></thead>
+<tbody id="reportTableBody"></tbody>
+<tfoot><tr>
+<td colspan="11">GRAND TOTAL</td><td id="reportTotalBill">₹0.00</td>
+<td id="reportTotalPaid">₹0.00</td><td id="reportTotalBalance">₹0.00</td><td colspan="7"></td>
+</tr></tfoot>
+</table>
+</div>
+</div>
+
+<script>
+function purchases(){return JSON.parse(localStorage.getItem('purchases'))||[];}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function material(p){return (p.items||[]).map(i=>`${esc(i.item)} (${Number(i.quantity||0)} × ₹${Number(i.rate||0).toFixed(2)})`).join('<br>');}
+function fillFilter(id,vals){
+    const el=document.getElementById(id), current=el.value;
+    el.innerHTML='<option value="">All</option>'+[...new Set(vals.filter(Boolean))].sort().map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+    if(vals.includes(current)) el.value=current;
+}
+function loadReportFilters(){
+    const ps=purchases();
+    fillFilter('reportVendor',ps.map(p=>p.vendor));
+    fillFilter('reportCategory',ps.map(p=>p.category));
+    fillFilter('reportDepartment',ps.map(p=>p.department));
+}
+function renderReport(ps){
+    const body=document.getElementById('reportTableBody'); body.innerHTML='';
+    let bill=0,paid=0,balance=0;
+    document.getElementById('reportCount').innerText='Showing Records: '+ps.length;
+    if(!ps.length){
+        body.innerHTML='<tr><td colspan="21" style="padding:25px;color:#dc3545;font-weight:bold;">No Purchase Records Found</td></tr>';
+    } else {
+        ps.forEach((p,i)=>{
+            bill+=Number(p.grandTotal||0); paid+=Number(p.amountPaid||0); balance+=Number(p.balanceAmount||0);
+            body.innerHTML+=`<tr>
+<td>${i+1}</td><td>${esc(p.college)}</td><td>${esc(p.invoice)}</td><td>${esc(p.poNo)}</td><td>${esc(p.date)}</td>
+<td>${esc(p.vendor)}</td><td>${esc(p.category)}</td><td>${esc(p.department)}</td><td>${esc(p.particulars)}</td><td>${esc(p.purpose)}</td>
+<td>${material(p)}</td><td>₹${billFor(p)}</td><td>₹${paidFor(p)}</td><td>₹${balFor(p)}</td>
+<td>${esc(p.paymentStatus)}</td><td>${esc(p.materialStatus)}</td><td>${esc(p.gateEntryDate)}</td>
+<td>${esc(p.gateEntryPerson)}</td><td>${esc(p.purchaseEntryPerson)}</td><td>${esc(p.billStatus)}</td><td>${esc(p.remarks)}</td>
+</tr>`;
+        });
+    }
+    document.getElementById('reportTotalBill').innerText='₹'+bill.toFixed(2);
+    document.getElementById('reportTotalPaid').innerText='₹'+paid.toFixed(2);
+    document.getElementById('reportTotalBalance').innerText='₹'+balance.toFixed(2);
+}
+function billFor(p){return Number(p.grandTotal||0).toFixed(2)}
+function paidFor(p){return Number(p.amountPaid||0).toFixed(2)}
+function balFor(p){return Number(p.balanceAmount||0).toFixed(2)}
+
+function runReport(){
+    const unit=document.getElementById('reportUnit').value, from=document.getElementById('reportFromDate').value, to=document.getElementById('reportToDate').value;
+    const vendor=document.getElementById('reportVendor').value, category=document.getElementById('reportCategory').value;
+    const dept=document.getElementById('reportDepartment').value, pay=document.getElementById('reportPaymentStatus').value;
+    const mat=document.getElementById('reportMaterialStatus').value, bill=document.getElementById('reportBillStatus').value;
+    renderReport(purchases().filter(p=>{
+        if(unit&&p.college!==unit)return false;if(from&&p.date<from)return false;if(to&&p.date>to)return false;
+        if(vendor&&p.vendor!==vendor)return false;if(category&&p.category!==category)return false;if(dept&&p.department!==dept)return false;
+        if(pay&&p.paymentStatus!==pay)return false;if(mat&&p.materialStatus!==mat)return false;if(bill&&p.billStatus!==bill)return false;
+        return true;
+    }));
+}
+function resetReport(){
+    ['reportUnit','reportVendor','reportCategory','reportDepartment','reportPaymentStatus','reportMaterialStatus','reportBillStatus'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('reportFromDate').value='';document.getElementById('reportToDate').value='';
+    renderReport(purchases());
+}
+window.addEventListener('load',()=>{loadReportFilters();renderReport(purchases());});
+</script>
+</body>
+</html>

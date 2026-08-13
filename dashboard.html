@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITSIM Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* Header */
+
+.header{
+    height:70px;
+    background:#0066cc;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+}
+
+.header h2{
+    font-size:28px;
+}
+
+.header p{
+    font-size:16px;
+}
+
+/* Sidebar */
+
+.sidebar{
+    position:fixed;
+    top:70px;
+    left:0;
+    width:240px;
+    height:calc(100vh - 70px);
+    background:#1f2937;
+    overflow:auto;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:16px 20px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#0066cc;
+}
+
+/* Main */
+
+.main{
+    margin-left:260px;
+    margin-top:90px;
+    padding:20px;
+}
+
+/* Cards */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 10px rgba(0,0,0,.15);
+    text-align:center;
+}
+
+.card h3{
+    color:#555;
+}
+
+.card h1{
+    color:#0066cc;
+    margin-top:10px;
+    font-size:35px;
+}
+
+/* Table */
+
+.table-box{
+    margin-top:35px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 5px 10px rgba(0,0,0,.15);
+}
+
+.table-box h2{
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th,
+table td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+table th{
+    background:#0066cc;
+    color:white;
+}
+
+table tr:nth-child(even){
+    background:#f9f9f9;
+}
+
+table tr:hover{
+    background:#eef5ff;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Header -->
+
+<div class="header">
+
+    <h2>ITSIM Dashboard</h2>
+
+    <p>Welcome Admin</p>
+
+</div>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<a href="dashboard.html">🏠 Dashboard</a>
+
+<a href="categorymaster.html">📂 Category Master</a>
+
+<a href="itemnamemaster.html">📝 Item Name Master</a>
+
+<a href="vendormaster.html">🏢 Vendor Master</a>
+
+<a href="itemmaster.html">📦 Item Master</a>
+
+<a href="viewitems.html">📋 View Items</a>
+
+<a href="purchaseentry.html">🛒 Purchase Entry</a>
+
+<a href="purchasebillregister.html">📄 Purchase / Bill Register</a>
+
+<a href="transfer.html">🔄 College Transfer</a>
+
+<a href="login.html">🚪 Logout</a>
+
+</div>
+<!-- Main -->
+
+<div class="main">
+
+<h2>Dashboard Overview</h2>
+<br>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Stock</h3>
+<h1>250</h1>
+</div>
+
+<div class="card">
+<h3>Total Issues</h3>
+<h1>120</h1>
+</div>
+
+<div class="card">
+<h3>Total Transfers</h3>
+<h1>35</h1>
+</div>
+
+<div class="card">
+<h3>Low Stock Items</h3>
+<h1 id="lowStockCount">0</h1>
+</div>
+
+<div class="card">
+<h3>🏫 Colleges</h3>
+<h1>5</h1>
+</div>
+
+<div class="card">
+<h3>👥 Total Users</h3>
+<h1>10</h1>
+</div>
+
+</div> <!-- cards close -->
+
+<div class="table-box">
+
+<h2>🔴 Low Stock Alert</h2>
+
+<table id="lowStockTable">
+
+<tr>
+<th>Item Name</th>
+<th>Available Qty</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>Dell Desktop</td>
+<td>2</td>
+<td style="color:red;"><b>Low Stock</b></td>
+</tr>
+
+<tr>
+<td>HP LaserJet Printer</td>
+<td>1</td>
+<td style="color:red;"><b>Low Stock</b></td>
+</tr>
+
+<tr>
+<td>CAT6 Network Cable</td>
+<td>3</td>
+<td style="color:red;"><b>Low Stock</b></td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="table-box">
+
+<h2>⚡ Quick Actions</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3><a href="itemmaster.html" style="text-decoration:none;color:#0066cc;">➕ Purchase Entry</a></h3>
+</div>
+
+<div class="card">
+<h3>
+<a href="issueitems.html" style="text-decoration:none;color:#0066cc;">📤 Issue Items</a>
+</h3>
+</div>
+
+<div class="card">
+<h3><a href="viewitems.html" style="text-decoration:none;color:#0066cc;">📋 View Stock</a></h3>
+</div>
+
+<div class="card">
+<h3><a href="transfer.html" style="text-decoration:none;color:#0066cc;">🔄 Transfer</a></h3>
+</div>
+
+<div class="card">
+<h3><a href="reports.html" style="text-decoration:none;color:#0066cc;">📊 Reports</a></h3>
+</div>
+
+</div>
+
+</div>
+
+<div class="table-box">
+
+<h2>Recent Assets</h2>
+
+<table>
+
+<tr>
+<th>Asset ID</th>
+<th>Category</th>
+<th>Item Name</th>
+<th>Brand</th>
+<th>College</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>AST001</td>
+<td>Desktop</td>
+<td>Dell OptiPlex</td>
+<td>Dell</td>
+<td>KSRCE</td>
+<td>Available</td>
+</tr>
+
+<tr>
+<td>AST002</td>
+<td>Printer</td>
+<td>HP LaserJet</td>
+<td>HP</td>
+<td>KSRCT</td>
+<td>Working</td>
+</tr>
+
+<tr>
+<td>AST003</td>
+<td>CCTV</td>
+<td>CP Plus Camera</td>
+<td>CP Plus</td>
+<td>KSRCAS</td>
+<td>Installed</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITSIM - IT Support & Infrastructure Management</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="navbar">
+
+        <div class="logo">ITSIM</div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+
+    </nav>
+
+    <!-- Hero -->
+
+    <section class="hero" id="home">
+
+        <img src="hero.png" alt="ITSIM">
+
+        <div class="overlay"></div>
+
+        <div class="content">
+
+            <h1>IT SUPPORT & INFRASTRUCTURE MANAGEMENT</h1>
+
+            <p>
+                Reliable IT Support | Networking | Servers | CCTV | Asset Management
+            </p>
+
+            <a href="#services" class="btn">Explore Services</a>
+
+        </div>
+
+    </section>
+
+    <!-- About -->
+
+    <section class="about" id="about">
+
+        <h2>About ITSIM</h2>
+
+        <p>
+
+            IT Support and Infrastructure Management is responsible for
+            maintaining computer systems, networking infrastructure,
+            server administration, CCTV surveillance, software installation,
+            hardware support and IT asset management.
+
+        </p>
+
+    </section>
+
+    <!-- Services -->
+
+    <section class="services" id="services">
+
+        <h2>Our Services</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>💻 IT Support</h3>
+                <p>Desktop, Laptop & Printer Support</p>
+            </div>
+
+            <div class="card">
+                <h3>🌐 Networking</h3>
+                <p>LAN, Wi-Fi & Internet Management</p>
+            </div>
+
+            <div class="card">
+                <h3>🖥 Servers</h3>
+                <p>Server Installation & Maintenance</p>
+            </div>
+
+            <div class="card">
+                <h3>📷 CCTV</h3>
+                <p>Security Camera Monitoring</p>
+            </div>
+
+            <div class="card">
+                <h3>📦 Store</h3>
+                <p>IT Asset & Inventory Management</p>
+            </div>
+
+            <div class="card">
+                <h3>🔒 Security</h3>
+                <p>Data Backup & Cyber Security</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Contact -->
+
+    <section class="contact" id="contact">
+
+        <h2>Contact</h2>
+
+        <p>Email : Itsimoffice@ksrei.org</p>
+
+        <p>Phone : +91 9585371111</p>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+
+        © 2026 ITSIM - IT Support & Infrastructure Management
+
+    </footer>
+
+    <!-- Secret Login Shortcut -->
+
+<script>
+
+let secret = "";
+
+document.addEventListener("keydown", function(event){
+
+    // Ignore typing inside input or textarea
+    if (
+        event.target.tagName === "INPUT" ||
+        event.target.tagName === "TEXTAREA"
+    ) {
+        return;
+    }
+
+    // Store pressed key
+    secret += event.key;
+
+    // Keep only last 3 keys
+    if(secret.length > 3){
+        secret = secret.slice(-3);
+    }
+
+    // If user types 123
+    if(secret === "123"){
+
+        alert("Opening Login Page...");
+
+        window.location.href = "login.html";
+
+        secret = "";
+
+    }
+
+});
+
+</script>
+</body>
+
+</html>
