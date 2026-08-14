@@ -135,8 +135,6 @@ window.onload = function () {
 
     loadDropdown("brand", "brand");
 
-    loadDropdown("college", "college");
-
 };
 
 /* ---------- Block Future Date ---------- */
@@ -240,6 +238,41 @@ function loadCategories() {
 
     });
 
+}
+
+function deleteCategory() {
+
+    let category = document.getElementById("categoryName").value.trim();
+
+    if (category === "") {
+        alert("Please Enter Category Name to Delete");
+        return;
+    }
+
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+    let index = categories.findIndex(
+        c => c.toLowerCase() === category.toLowerCase()
+    );
+
+    if (index === -1) {
+        alert("Category Not Found");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to delete this category?")) {
+        return;
+    }
+
+    categories.splice(index, 1);
+
+    localStorage.setItem("categories", JSON.stringify(categories));
+
+    document.getElementById("categoryName").value = "";
+
+    loadCategories();
+
+    alert("✅ Category Deleted Successfully");
 }
 
 /* ---------- Load Dropdown ---------- */

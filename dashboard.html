@@ -28,6 +28,12 @@ body{
     justify-content:space-between;
     align-items:center;
     padding:0 25px;
+
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:1000;
 }
 
 .header h2{
@@ -197,6 +203,11 @@ table tr:hover{
 </div>
 
 <div class="card">
+<h3> Total Remaining</h3>
+<h1>0</h1>
+</div>
+
+<div class="card">
 <h3>Total Transfers</h3>
 <h1>35</h1>
 </div>
@@ -211,10 +222,6 @@ table tr:hover{
 <h1>5</h1>
 </div>
 
-<div class="card">
-<h3>👥 Total Users</h3>
-<h1>10</h1>
-</div>
 
 </div> <!-- cards close -->
 
@@ -332,6 +339,8 @@ table tr:hover{
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabaseClient.js"></script>
 <script src="script.js"></script>
 
 </body>
