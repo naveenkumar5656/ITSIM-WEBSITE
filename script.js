@@ -457,6 +457,8 @@ window.addEventListener("load",function(){
 
     loadSpecifications();
 
+    loadTransferItemDropdown();
+
 });
 
 function loadBrandDropdown() {
@@ -719,6 +721,28 @@ function loadItemNameDropdown(){
         <option value="${item.itemName}">
             ${item.itemName}
         </option>`;
+
+    });
+
+}
+
+function loadTransferItemDropdown(){
+
+    let dropdown = document.getElementById("transferItem");
+
+    if(!dropdown) return;
+
+    let itemNames = JSON.parse(localStorage.getItem("itemNames")) || [];
+
+    dropdown.innerHTML = '<option value="">-- Select Item --</option>';
+
+    itemNames.forEach(function(item){
+
+        dropdown.innerHTML += `
+            <option value="${item.itemName}">
+                ${item.itemName}
+            </option>
+        `;
 
     });
 

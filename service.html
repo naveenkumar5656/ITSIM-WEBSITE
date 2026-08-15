@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Issue Items</title>
+<title>Service / Repair</title>
 
 <style>
 
@@ -73,9 +73,9 @@ body{
     padding:100px 35px 35px;
 }
 
-/* Card */
+/* Service Card */
 
-.issue-card{
+.service-card{
     background:white;
     padding:30px;
     border-radius:10px;
@@ -83,7 +83,7 @@ body{
     max-width:950px;
 }
 
-.issue-card h1{
+.service-card h1{
     margin-top:0;
     margin-bottom:30px;
 }
@@ -100,8 +100,8 @@ body{
     margin-bottom:8px;
 }
 
-select,
 input,
+select,
 textarea{
     width:100%;
     padding:12px;
@@ -114,17 +114,25 @@ textarea{
     resize:vertical;
 }
 
-/* Available Stock */
+/* Photo */
 
-.stock-box{
-    background:#f1f5f9;
+.photo-box{
+    border:2px dashed #bbb;
+    padding:20px;
+    border-radius:8px;
+    background:#fafafa;
 }
 
-/* Button */
+.photo-box input{
+    border:none;
+    padding:5px 0;
+}
 
-.issue-btn{
+/* Save Button */
+
+.save-btn{
     margin-top:5px;
-    background:#0066cc;
+    background:#28a745;
     color:white;
     border:none;
     padding:13px 25px;
@@ -133,8 +141,8 @@ textarea{
     cursor:pointer;
 }
 
-.issue-btn:hover{
-    background:#0052a3;
+.save-btn:hover{
+    background:#218838;
 }
 
 </style>
@@ -178,6 +186,8 @@ textarea{
 
     <a href="issueitems.html">📤 Issue Items</a>
 
+    <a href="service.html">🔧 Service / Repair</a>
+
     <a href="login.html">🚪 Logout</a>
 
 </div>
@@ -187,18 +197,48 @@ textarea{
 
 <div class="main">
 
-    <div class="issue-card">
+    <div class="service-card">
 
-        <h1>📤 Issue Items</h1>
+        <h1>🔧 Service / Repair Entry</h1>
 
 
-        <!-- Issue To College -->
+        <!-- Service No -->
 
         <div class="form-group">
 
-            <label>Issue To College</label>
+            <label>Service No</label>
 
-            <select id="issueCollege">
+            <input
+                type="text"
+                id="serviceNo"
+                value="SRV-0001"
+                readonly
+            >
+
+        </div>
+
+
+        <!-- Service Date -->
+
+        <div class="form-group">
+
+            <label>Service Date</label>
+
+            <input
+                type="date"
+                id="serviceDate"
+            >
+
+        </div>
+
+
+        <!-- College -->
+
+        <div class="form-group">
+
+            <label>College</label>
+
+            <select id="serviceCollege">
 
                 <option value="">-- Select College --</option>
 
@@ -212,45 +252,13 @@ textarea{
         </div>
 
 
-        <!-- Department -->
-
-        <div class="form-group">
-
-            <label>Department</label>
-
-            <input
-                type="text"
-                id="department"
-                placeholder="Enter Department"
-            >
-
-        </div>
-
-
-        <!-- Issue To -->
-
-        <div class="form-group">
-
-            <label>Issue To</label>
-
-            <input
-                type="text"
-                id="issueTo"
-                placeholder="Faculty / Staff Name"
-            >
-
-        </div>
-
-
         <!-- Item Name -->
 
         <div class="form-group">
 
             <label>Item Name</label>
 
-            <select
-                id="itemName"
-                onchange="changeStock()">
+            <select id="serviceItem">
 
                 <option value="">-- Select Item --</option>
 
@@ -259,52 +267,93 @@ textarea{
         </div>
 
 
-        <!-- Available Stock -->
+        <!-- Vendor -->
 
         <div class="form-group">
 
-            <label>Available Stock</label>
+            <label>Vendor</label>
 
-            <input
-                type="number"
-                id="availableStock"
-                class="stock-box"
-                value="0"
-                readonly
-            >
+            <select id="serviceVendor">
+
+                <option value="">-- Select Vendor --</option>
+
+            </select>
 
         </div>
 
 
-        <!-- Quantity -->
+        <!-- Fault -->
 
         <div class="form-group">
 
-            <label>Issue Quantity</label>
+            <label>Fault Description</label>
 
-            <input
-                type="number"
-                id="issueQuantity"
-                placeholder="Enter Quantity"
-                min="1"
-            >
+            <textarea
+                id="faultDescription"
+                rows="4"
+                placeholder="Enter the fault / problem details">
+            </textarea>
 
         </div>
 
 
-        <!-- Issue Date -->
+        <!-- Status -->
 
         <div class="form-group">
 
-            <label>Issue Date</label>
+            <label>Current Status</label>
 
-            <input
-                type="date"
-                id="issueDate"
-            >
+            <select id="serviceStatus">
+
+                <option value="">-- Select Status --</option>
+
+                <option>Fault Reported</option>
+                <option>Sent for Service</option>
+                <option>Under Service</option>
+                <option>Returned</option>
+                <option>Completed</option>
+
+            </select>
 
         </div>
 
+
+        <!-- Before Photo -->
+
+        <div class="form-group">
+
+            <label>Before Service Photo</label>
+
+            <div class="photo-box">
+
+                <input
+                    type="file"
+                    id="beforePhoto"
+                    accept="image/*"
+                    capture="environment"                >
+
+
+            </div>
+
+        </div>
+    
+        <!-- After Service Photo -->
+
+         <div class="form-group">
+
+        <label>After Service Photo</label>
+
+         <div class="photo-box">
+
+        <input
+    type="file"
+    id="afterPhoto"
+    accept="image/*"
+    capture="environment"
+
+          </div>
+
+        </div>
 
         <!-- Remarks -->
 
@@ -313,22 +362,22 @@ textarea{
             <label>Remarks</label>
 
             <textarea
-                id="remarks"
+                id="serviceRemarks"
                 rows="4"
-                placeholder="Enter Remarks">
+                placeholder="Enter additional remarks">
             </textarea>
 
         </div>
 
 
-        <!-- Issue Button -->
+        <!-- Save -->
 
         <button
             type="button"
-            class="issue-btn"
-            onclick="saveIssue()">
+            class="save-btn"
+            onclick="saveService()">
 
-            📤 Issue Item
+            💾 Save Service
 
         </button>
 
@@ -337,16 +386,11 @@ textarea{
 </div>
 
 
-<script src="script.js"></script>
-
-
 <script>
 
-/* Load Item Names from Item Name Master */
+function loadServiceItemDropdown(){
 
-function loadIssueItemDropdown(){
-
-    let dropdown = document.getElementById("itemName");
+    let dropdown = document.getElementById("serviceItem");
 
     if(!dropdown) return;
 
@@ -368,83 +412,17 @@ function loadIssueItemDropdown(){
 
 }
 
+function saveService(){
 
-/* Change Available Stock */
-
-function changeStock(){
-
-    let item =
-        document.getElementById("itemName").value;
-
-    let stock =
-        document.getElementById("availableStock");
-
-
-    if(item=="Mouse"){
-
-        stock.value=100;
-
-    }
-
-    else if(item=="Keyboard"){
-
-        stock.value=50;
-
-    }
-
-    else if(item=="Monitor"){
-
-        stock.value=25;
-
-    }
-
-    else if(item=="Desktop"){
-
-        stock.value=15;
-
-    }
-
-    else if(item=="Laptop"){
-
-        stock.value=40;
-
-    }
-
-    else if(item=="Printer"){
-
-        stock.value=10;
-
-    }
-
-    else if(item=="LAN Cable"){
-
-        stock.value=500;
-
-    }
-
-    else if(item=="UPS"){
-
-        stock.value=30;
-
-    }
-
-    else{
-
-        stock.value=0;
-
-    }
+    alert("Service Entry Saved Successfully");
 
 }
 
-
-/* Load Item Dropdown */
-
 window.addEventListener("load", function(){
 
-    loadIssueItemDropdown();
+    loadServiceItemDropdown();
 
 });
-
 
 </script>
 
