@@ -18,7 +18,7 @@ button{border:none;padding:11px 20px;border-radius:5px;color:#fff;cursor:pointer
 .search-btn{background:#0066cc}.reset-btn{background:#6c757d}.print-btn{background:#28a745}.back-btn{background:#343a40}
 .record-count{margin-top:20px;padding:12px;background:#e9f2ff;border-left:5px solid #0066cc;font-weight:bold;color:#0066cc}
 .table-container{margin-top:18px;overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:2200px}
+table{width:100%;border-collapse:collapse}
 th{background:#0066cc;color:#fff;padding:10px 7px;border:1px solid #ddd;font-size:12px}
 td{padding:9px 7px;border:1px solid #ddd;text-align:center;font-size:12px}
 tbody tr:nth-child(even){background:#f8f9fa}
@@ -31,6 +31,43 @@ tbody tr:nth-child(even){background:#f8f9fa}
  .filter-box,.button-area,.record-count{display:none}.container{width:100%;margin:0;padding:8px;box-shadow:none}
  table{min-width:0;font-size:9px}th,td{font-size:9px;padding:5px}.action-col{display:none}
 }
+
+#abstractReport {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+#abstractReport table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+#abstractReport th,
+#abstractReport td {
+    border: 1px solid #333;
+    padding: 10px;
+    text-align: center;
+    word-break: normal;
+}
+
+#abstractReport th:nth-child(1),
+#abstractReport td:nth-child(1) {
+    width: 15%;
+}
+
+#abstractReport th:nth-child(2),
+#abstractReport td:nth-child(2) {
+    width: 55%;
+}
+
+#abstractReport th:nth-child(3),
+#abstractReport td:nth-child(3) {
+    width: 30%;
+}
+
 </style>
 </head>
 <body>
@@ -54,6 +91,20 @@ tbody tr:nth-child(even){background:#f8f9fa}
 <button class="search-btn" onclick="searchRegister()">🔍 Search</button>
 <button class="reset-btn" onclick="resetRegister()">🔄 Reset</button>
 <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+<button
+    type="button"
+    onclick="showAbstract()"
+    style="
+        background:#343a40;
+        color:white;
+        border:none;
+        padding:10px 18px;
+        border-radius:5px;
+        font-weight:bold;
+        cursor:pointer;
+    ">
+    📊 Abstract
+</button>
 <button class="back-btn" onclick="window.location.href='dashboard.html'">⬅ Back</button>
 </div>
 </div>
@@ -106,7 +157,9 @@ function materialText(p){
     return (p.items||[]).map(i=>`${escapeHtml(i.item)} (${Number(i.quantity||0)} × ₹${Number(i.rate||0).toFixed(2)})`).join('<br>');
 }
 
+let currentPurchaseRecords = null;
 function displayPurchaseRegister(purchases){
+    currentPurchaseRecords = purchases;
     const table=document.getElementById('purchaseRegisterTable');
     table.innerHTML='';
     document.getElementById('recordCount').innerText='Showing Records: '+purchases.length;
@@ -185,6 +238,216 @@ window.addEventListener('load',()=>{
     populateFilters(purchases);
     displayPurchaseRegister(purchases);
 });
-</script>
+
+function formatAbstractDate() {
+
+    let toDate = document.getElementById("toDate")?.value;
+
+    if (!toDate) {
+        return "CURRENT DATE";
+    }
+
+    let parts = toDate.split("-");
+
+    return parts[2] + "." + parts[1] + "." + parts[0];
+}
+
+function showAbstract() {
+
+    let purchases = currentPurchaseRecords || getPurchases();
+
+    // Vendor-wise balance amount
+    let vendorTotals = {};
+
+    purchases.forEach(function(p) {
+
+        let vendor = (p.vendor || "Unknown Vendor").trim();
+
+        let balance = Number(p.balanceAmount || 0);
+
+        if (!vendorTotals[vendor]) {
+            vendorTotals[vendor] = 0;
+        }
+
+        vendorTotals[vendor] += balance;
+
+    });
+
+    let abstractHTML = `
+        <div style="
+            width:100%;
+            max-width:900px;
+            margin:20px auto;
+            padding:20px;
+            box-sizing:border-box;
+            background:white;
+        ">
+
+            <div style="
+                text-align:center;
+                font-size:22px;
+                font-weight:bold;
+                color:#0066cc;
+                margin-bottom:10px;
+            ">
+                KSR EDUCATIONAL INSTITUTIONS (ITSIM)
+            </div>
+
+            <div style="
+                text-align:center;
+                font-size:18px;
+                font-weight:bold;
+                margin-bottom:8px;
+            ">
+                ITSIM - PENDING LIST AS ON ${formatAbstractDate()}
+            </div>
+
+            <div style="
+                text-align:center;
+                font-size:18px;
+                font-weight:bold;
+                margin-bottom:20px;
+            ">
+                ABSTRACT
+            </div>
+
+            <table style="
+                width:100%;
+                max-width:100%;
+                box-sizing:border-box;
+                border-collapse:collapse;
+            ">
+
+                <thead>
+                    <tr>
+
+                        <th style="
+                            width:15%;
+                            border:1px solid #333;
+                            padding:10px;
+                            background:#0066cc;
+                            color:white;
+                            text-align:center;
+                        ">
+                            SL NO.
+                        </th>
+
+                        <th style="
+                            width:55%;
+                            border:1px solid #333;
+                            padding:10px;
+                            background:#0066cc;
+                            color:white;
+                            text-align:center;
+                        ">
+                            NAME OF THE COMPANY
+                        </th>
+
+                        <th style="
+                            width:30%;
+                            border:1px solid #333;
+                            padding:10px;
+                            background:#0066cc;
+                            color:white;
+                            text-align:center;
+                        ">
+                            BALANCE AMOUNT
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody id="abstractTableBody">
+                </tbody>
+
+                <tfoot>
+
+                    <tr>
+
+                        <th colspan="2" style="
+                            border:1px solid #333;
+                            padding:10px;
+                            background:#0066cc;
+                            color:white;
+                            text-align:right;
+                        ">
+                            TOTAL
+                        </th>
+
+                        <th id="abstractTotal" style="
+                            border:1px solid #333;
+                            padding:10px;
+                            background:#0066cc;
+                            color:white;
+                            text-align:right;
+                        ">
+                            0.00
+                        </th>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+    `;
+
+    document.querySelector(".container").style.height = "auto";
+    document.querySelector(".container").style.overflow = "visible";
+
+    document.querySelector(".container").innerHTML = abstractHTML;
+
+
+    // Add vendor rows
+    let tableBody = document.getElementById("abstractTableBody");
+
+    let grandTotal = 0;
+
+    let vendors = Object.keys(vendorTotals).sort();
+
+    vendors.forEach(function(vendor, index) {
+
+        let amount = vendorTotals[vendor];
+
+        grandTotal += amount;
+
+        tableBody.innerHTML += `
+            <tr>
+
+                <td style="
+                    border:1px solid #333;
+                    padding:10px;
+                    text-align:center;
+                ">
+                    ${index + 1}
+                </td>
+
+                <td style="
+                    border:1px solid #333;
+                    padding:10px;
+                ">
+                    ${escapeHtml(vendor)}
+                </td>
+
+                <td style="
+                    border:1px solid #333;
+                    padding:10px;
+                    text-align:right;
+                ">
+                    ₹${amount.toFixed(2)}
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+
+    // Total
+    document.getElementById("abstractTotal").innerText =
+        "₹" + grandTotal.toFixed(2);
+
+}</script>
 </body>
 </html>
