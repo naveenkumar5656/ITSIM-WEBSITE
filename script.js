@@ -20,6 +20,9 @@ function saveItem() {
         brand: document.getElementById("brand").value,
 
         model: document.getElementById("model").value,
+        
+        lowStockQty: document.getElementById("lowStockQty") ?
+        document.getElementById("lowStockQty").value : "",
 
         specification: document.getElementById("specification").value,
 
@@ -57,6 +60,9 @@ function saveItem() {
 
         status: document.getElementById("status") ?
         document.getElementById("status").value : "",
+        
+        lowStock: document.getElementById("lowStock") ?
+        document.getElementById("lowStock").value : 0,
 
         remarks: document.getElementById("remarks") ?
         document.getElementById("remarks").value : ""

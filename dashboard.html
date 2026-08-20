@@ -194,31 +194,33 @@ table tr:hover{
 
 <div class="cards">
 
-<div class="card">
-<h3>Total Stock</h3>
-<h1>250</h1>
+<div class="card" onclick="showStockSummary()" style="cursor:pointer;">
+    <h3>📦 Total Stock</h3>
+    <h1 id="totalStock">0</h1>
 </div>
 
 <div class="card">
-<h3>Total Issues</h3>
-<h1>120</h1>
+    <h3>Total Issues</h3>
+    <h1 id="totalIssues">0</h1>
 </div>
 
 <div class="card">
-<h3> Total Remaining</h3>
-<h1>0</h1>
+    <h3>Total Remaining</h3>
+    <h1 id="totalRemaining">0</h1>
 </div>
 
 <div class="card">
-<h3>Total Transfers</h3>
-<h1>35</h1>
+    <h3>Total Transfers</h3>
+    <h1 id="totalTransfers">0</h1>
 </div>
 
-<div class="card">
-<h3>Low Stock Items</h3>
-<h1 id="lowStockCount">0</h1>
-</div>
+<div class="card" onclick="showLowStockSummary()" style="cursor:pointer;">
 
+    <h3>🔴 Low Stock Items</h3>
+
+    <h1 id="lowStockCount">0</h1>
+
+</div>
 <div class="card">
 <h3>🏫 Colleges</h3>
 <h1>5</h1>
@@ -227,9 +229,222 @@ table tr:hover{
 
 </div> <!-- cards close -->
 
+<div id="lowStockSummaryBox"
+     style="display:none;
+            background:white;
+            padding:25px;
+            margin-top:30px;
+            border-radius:10px;
+            box-shadow:0 5px 15px rgba(0,0,0,.15);">
+
+    <div style="display:flex;
+                justify-content:space-between;
+                align-items:center;">
+
+        <h2>🔴 Low Stock Summary</h2>
+        
+        <div style="margin-bottom:20px;">
+
+    <label style="font-weight:bold;">
+        Filter by College:
+    </label>
+
+    <select
+        id="lowStockCollegeFilter"
+        onchange="filterLowStockSummary()"
+        onkeydown="lowStockCollegeStarSearch(event)"
+        style="
+            margin-left:10px;
+            padding:10px;
+            min-width:220px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        "
+    >
+
+        <option value="">All Colleges</option>
+
+    </select>
+
+</div>
+
+
+<div style="margin-bottom:20px;">
+
+    <label style="font-weight:bold;">
+        Search Item:
+    </label>
+
+    <input
+        type="text"
+        id="lowStockItemSearch"
+        placeholder="🔍 Search Item Name..."
+        onkeyup="filterLowStockSummary()"
+        style="
+            margin-left:10px;
+            padding:10px;
+            width:250px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        "
+    >
+
+</div>
+
+        <button
+            onclick="closeLowStockSummary()"
+            style="background:#dc3545;
+                   color:white;
+                   border:none;
+                   padding:10px 18px;
+                   border-radius:5px;
+                   cursor:pointer;">
+
+            ✖ Close
+
+        </button>
+
+    </div>
+
+    <table style="width:100%; margin-top:20px;">
+
+        <thead>
+
+            <tr>
+                <th>S.No</th>
+                <th>Item Name</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>College</th>
+                <th>Available Qty</th>
+                <th>Low Stock Qty</th>
+                <th>Status</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="lowStockSummaryBody"></tbody>
+
+    </table>
+
+</div>
+
+<!-- Stock Summary -->
+
+<div class="table-box" id="stockSummaryBox" style="display:none;">
+
+    <h2 style="display:flex; justify-content:space-between; align-items:center;">
+    
+    <span>📦 Stock Summary</span>
+
+    <button
+        type="button"
+        onclick="closeStockSummary()"
+        style="
+            background:#dc3545;
+            color:white;
+            border:none;
+            padding:8px 15px;
+            border-radius:5px;
+            cursor:pointer;
+            font-size:14px;
+        ">
+        ✖ Close
+    </button>
+
+</h2>
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Filter by College:
+        </label>
+
+        <select
+            id="stockCollegeFilter"
+            onchange="filterStockSummary()"
+            style="
+                margin-left:10px;
+                padding:10px;
+                min-width:220px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+            <option value="">All Colleges</option>
+        </select>
+        
+        <input
+    type="text"
+    id="collegeSearch"
+    style="display:none;"
+    autocomplete="off"
+>
+
+    </div>
+
+    <div style="margin-bottom:20px;">
+
+    <label style="font-weight:bold;">
+        Search Item:
+    </label>
+
+    <input
+        type="text"
+        id="stockItemSearch"
+        placeholder="🔍 Search Item Name..."
+        onkeyup="filterStockSummary()"
+        style="
+            margin-left:10px;
+            padding:10px;
+            width:250px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        "
+    >
+
+</div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>S.No</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>College</th>
+                <th>Quantity</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="stockSummaryBody">
+        </tbody>
+
+        <tfoot>
+
+            <tr>
+                <th colspan="6" style="text-align:right;">
+                    TOTAL
+                </th>
+
+                <th id="stockSummaryTotal">
+                    0
+                </th>
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+</div>
 <div class="table-box">
 
 <h2>🔴 Low Stock Alert</h2>
+
 
 <table id="lowStockTable">
 
@@ -237,24 +452,6 @@ table tr:hover{
 <th>Item Name</th>
 <th>Available Qty</th>
 <th>Status</th>
-</tr>
-
-<tr>
-<td>Dell Desktop</td>
-<td>2</td>
-<td style="color:red;"><b>Low Stock</b></td>
-</tr>
-
-<tr>
-<td>HP LaserJet Printer</td>
-<td>1</td>
-<td style="color:red;"><b>Low Stock</b></td>
-</tr>
-
-<tr>
-<td>CAT6 Network Cable</td>
-<td>3</td>
-<td style="color:red;"><b>Low Stock</b></td>
 </tr>
 
 </table>
@@ -344,6 +541,882 @@ table tr:hover{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabaseClient.js"></script>
 <script src="script.js"></script>
+
+<script>
+
+// =========================
+// TOTAL REMAINING
+// =========================
+
+let totalTransfersForRemaining = 0;
+
+transfers.forEach(function(transfer) {
+
+    totalTransfersForRemaining +=
+        Number(transfer.quantity) || 0;
+
+});
+
+let remainingStock =
+    totalStock
+    - totalIssues
+    - totalTransfersForRemaining;
+
+if (remainingStock < 0) {
+    remainingStock = 0;
+}
+
+document.getElementById("totalRemaining").innerText =
+    remainingStock;
+
+function loadLowStockAlert() {
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let issues =
+        JSON.parse(localStorage.getItem("issues")) || [];
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    let itemMaster =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+    let stockMap = {};
+
+
+    // =========================
+    // PURCHASE = ADD STOCK
+    // =========================
+
+    purchases.forEach(function(purchase) {
+
+        if (!purchase.items || !Array.isArray(purchase.items)) {
+            return;
+        }
+
+        purchase.items.forEach(function(item) {
+
+            let name =
+                (item.item || "").trim();
+
+            if (!name) return;
+
+            if (!stockMap[name]) {
+
+                stockMap[name] = {
+                    itemName: name,
+                    quantity: 0
+                };
+
+            }
+
+            stockMap[name].quantity +=
+                Number(item.quantity) || 0;
+
+        });
+
+    });
+
+
+    // =========================
+    // ISSUE = REDUCE STOCK
+    // =========================
+
+    issues.forEach(function(issue) {
+
+        let name =
+            (issue.itemName || "").trim();
+
+        if (!name) return;
+
+        if (!stockMap[name]) {
+
+            stockMap[name] = {
+                itemName: name,
+                quantity: 0
+            };
+
+        }
+
+        stockMap[name].quantity -=
+            Number(issue.quantity) || 0;
+
+    });
+
+
+    // =========================
+    // TRANSFER = REDUCE STOCK
+    // =========================
+
+    transfers.forEach(function(transfer) {
+
+        let name =
+            (
+                transfer.itemName ||
+                transfer.item ||
+                ""
+            ).trim();
+
+        if (!name) return;
+
+        if (!stockMap[name]) {
+
+            stockMap[name] = {
+                itemName: name,
+                quantity: 0
+            };
+
+        }
+
+        stockMap[name].quantity -=
+            Number(transfer.quantity) || 0;
+
+    });
+
+
+    // =========================
+    // LOW STOCK CHECK
+    // =========================
+
+    let lowStockItems = [];
+
+
+    Object.values(stockMap).forEach(function(stock) {
+
+        let masterItem =
+            itemMaster.find(function(item) {
+
+                return (
+                    (item.itemname || "")
+                        .trim()
+                        .toLowerCase()
+                    ===
+                    stock.itemName
+                        .trim()
+                        .toLowerCase()
+                );
+
+            });
+
+
+        if (!masterItem) return;
+
+
+        let lowStockLimit =
+            Number(masterItem.lowStock) || 0;
+
+
+        let remaining =
+            Math.max(0, stock.quantity);
+
+
+        if (
+            lowStockLimit > 0 &&
+            remaining <= lowStockLimit
+        ) {
+
+            lowStockItems.push({
+
+                itemName:
+                    stock.itemName,
+
+                quantity:
+                    remaining,
+
+                lowStock:
+                    lowStockLimit,
+
+                brand:
+                    masterItem.brand || "",
+
+                model:
+                    masterItem.model || "",
+
+                college:
+                    masterItem.college || ""
+
+            });
+
+        }
+
+    });
+
+
+    // =========================
+    // UPDATE COUNT
+    // =========================
+
+    document.getElementById("lowStockCount").innerText =
+        lowStockItems.length;
+
+
+    // =========================
+    // UPDATE ALERT TABLE
+    // =========================
+
+    let table =
+        document.getElementById("lowStockTable");
+
+    if (!table) return;
+
+
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+
+
+    lowStockItems.forEach(function(item) {
+
+        let row =
+            table.insertRow(-1);
+
+        row.innerHTML = `
+            <td>${item.itemName}</td>
+
+            <td>${item.quantity}</td>
+
+            <td style="color:red;">
+                <b>🔴 Low Stock</b>
+            </td>
+        `;
+
+    });
+
+}function showLowStockSummary() {
+
+    let items =
+        JSON.parse(localStorage.getItem("items")) || [];
+    
+    let collegeFilter =
+    document.getElementById(
+        "lowStockCollegeFilter"
+    );
+
+let colleges = [];
+
+items.forEach(function(item) {
+
+    let college =
+        (item.college || "").trim();
+
+    if (
+        college &&
+        !colleges.includes(college)
+    ) {
+        colleges.push(college);
+    }
+
+});
+
+colleges.sort();
+
+collegeFilter.innerHTML =
+    '<option value="">All Colleges</option>';
+
+colleges.forEach(function(college) {
+
+    collegeFilter.innerHTML +=
+        `<option value="${college}">
+            ${college}
+        </option>`;
+
+});
+
+    let box =
+        document.getElementById("lowStockSummaryBox");
+
+    let tbody =
+        document.getElementById("lowStockSummaryBody");
+
+    box.style.display = "block";
+
+    tbody.innerHTML = "";
+
+    let count = 0;
+
+    items.forEach(function(item) {
+
+        let quantity =
+            Number(item.quantity) || 0;
+
+        let lowStock =
+            Number(item.lowStock) || 0;
+
+        if (
+            lowStock > 0 &&
+            quantity <= lowStock
+        ) {
+
+            count++;
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>${count}</td>
+
+                    <td>${item.itemname || ""}</td>
+
+                    <td>${item.brand || ""}</td>
+
+                    <td>${item.model || ""}</td>
+
+                    <td>${item.college || ""}</td>
+
+                    <td>${quantity}</td>
+
+                    <td>${lowStock}</td>
+
+                    <td style="color:red;">
+                        <b>🔴 Low Stock</b>
+                    </td>
+
+                </tr>
+            `;
+        }
+
+    });
+
+
+    if (count === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8"
+                    style="text-align:center;padding:20px;">
+
+                    No Low Stock Items Found
+
+                </td>
+            </tr>
+        `;
+
+    }
+
+filterLowStockSummary();
+
+}
+
+function filterLowStockSummary() {
+
+    let items =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+    let selectedCollege =
+        document.getElementById(
+            "lowStockCollegeFilter"
+        ).value;
+
+    let searchText =
+        document.getElementById(
+            "lowStockItemSearch"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    let filteredItems = items.filter(function(item) {
+
+        let quantity =
+            Number(item.quantity) || 0;
+
+        let lowStock =
+            Number(item.lowStock) || 0;
+
+
+        // Only Low Stock Items
+        if (
+            lowStock <= 0 ||
+            quantity > lowStock
+        ) {
+            return false;
+        }
+
+
+        // College Filter
+        if (
+            selectedCollege &&
+            item.college !== selectedCollege
+        ) {
+            return false;
+        }
+
+
+        // Item Search
+        if (
+            searchText &&
+            !(item.itemname || "")
+                .toLowerCase()
+                .includes(searchText)
+        ) {
+            return false;
+        }
+
+
+        return true;
+
+    });
+
+
+    let tbody =
+        document.getElementById(
+            "lowStockSummaryBody"
+        );
+
+    tbody.innerHTML = "";
+
+
+    if (filteredItems.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8"
+                    style="
+                        padding:20px;
+                        text-align:center;
+                    ">
+                    No Low Stock Items Found
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    filteredItems.forEach(function(item, index) {
+
+        tbody.innerHTML += `
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>${item.itemname || ""}</td>
+
+                <td>${item.brand || ""}</td>
+
+                <td>${item.model || ""}</td>
+
+                <td>${item.college || ""}</td>
+
+                <td>${item.quantity || 0}</td>
+
+                <td>${item.lowStock || 0}</td>
+
+                <td style="color:red;">
+                    <b>🔴 Low Stock</b>
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+}
+
+function closeLowStockSummary() {
+
+    document.getElementById(
+        "lowStockSummaryBox"
+    ).style.display = "none";
+
+}
+
+function getDashboardStockData() {
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let itemMaster =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+    let stockData = [];
+
+    purchases.forEach(function(purchase) {
+
+        if (!purchase.items || !Array.isArray(purchase.items)) {
+            return;
+        }
+
+        purchase.items.forEach(function(purchaseItem) {
+
+            let itemName = purchaseItem.item || "";
+
+            // Find additional details from Item Master
+            let masterItem = itemMaster.find(function(item) {
+
+                return (
+                    (item.itemname || "").toLowerCase() ===
+                    itemName.toLowerCase()
+                );
+
+            }) || {};
+
+            stockData.push({
+
+                itemname: itemName,
+
+                category:
+                    purchase.category ||
+                    masterItem.category ||
+                    "",
+
+                brand:
+                    masterItem.brand ||
+                    "",
+
+                model:
+                    masterItem.model ||
+                    "",
+
+                college:
+                    purchase.college ||
+                    masterItem.college ||
+                    "",
+
+                quantity:
+                    Number(purchaseItem.quantity) || 0
+
+            });
+
+        });
+
+    });
+
+    return stockData;
+}
+
+
+// ================================
+// SHOW STOCK SUMMARY
+// ================================
+
+function showStockSummary() {
+
+    let stockData = getDashboardStockData();
+
+    let stockBox =
+        document.getElementById("stockSummaryBox");
+
+    stockBox.style.display = "block";
+
+
+    // College Dropdown
+    let collegeFilter =
+        document.getElementById("stockCollegeFilter");
+
+    let colleges = [];
+
+
+    stockData.forEach(function(item) {
+
+        let college =
+            (item.college || "").trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+
+            colleges.push(college);
+
+        }
+
+    });
+
+
+    colleges.sort();
+
+
+    collegeFilter.innerHTML =
+        '<option value="">All Colleges</option>';
+
+
+    colleges.forEach(function(college) {
+
+        collegeFilter.innerHTML +=
+            `<option value="${college}">
+                ${college}
+            </option>`;
+
+    });
+
+
+    // Item Search
+    let searchBox =
+        document.getElementById("stockItemSearch");
+
+    if (searchBox) {
+        searchBox.value = "";
+    }
+
+
+    displayStockSummary(stockData);
+
+}
+
+
+// ================================
+// DISPLAY STOCK SUMMARY
+// ================================
+
+function displayStockSummary(items) {
+
+    let selectedCollege =
+        document.getElementById("stockCollegeFilter").value;
+
+
+    let searchBox =
+        document.getElementById("stockItemSearch");
+
+
+    let searchText =
+        searchBox ?
+        searchBox.value.trim().toLowerCase() :
+        "";
+
+
+    let filteredItems =
+        items.filter(function(item) {
+
+
+            // College Filter
+            if (
+                selectedCollege &&
+                item.college !== selectedCollege
+            ) {
+
+                return false;
+
+            }
+
+
+            // Item Name Search
+            if (
+                searchText &&
+                !(item.itemname || "")
+                    .toLowerCase()
+                    .includes(searchText)
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+        });
+
+
+    let tbody =
+        document.getElementById("stockSummaryBody");
+
+    tbody.innerHTML = "";
+
+
+    let total = 0;
+
+
+    if (filteredItems.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7"
+                    style="
+                        padding:20px;
+                        text-align:center;
+                    ">
+                    No Stock Records Found
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+
+        filteredItems.forEach(function(item, index) {
+
+            let quantity =
+                Number(item.quantity) || 0;
+
+
+            total += quantity;
+
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>${index + 1}</td>
+
+                    <td>${item.itemname || ""}</td>
+
+                    <td>${item.category || ""}</td>
+
+                    <td>${item.brand || ""}</td>
+
+                    <td>${item.model || ""}</td>
+
+                    <td>${item.college || ""}</td>
+
+                    <td>${quantity}</td>
+
+                </tr>
+            `;
+
+        });
+
+    }
+
+
+    document.getElementById("stockSummaryTotal")
+        .innerText = total;
+
+}
+
+let collegeSearchMode = false;
+let collegeSearchText = "";
+
+document.addEventListener("keydown", function(event) {
+
+    // * press = start hidden college search
+    if (event.key === "*") {
+
+        collegeSearchMode = true;
+        collegeSearchText = "";
+
+        return;
+    }
+
+    // Type after *
+    if (collegeSearchMode && event.key.length === 1) {
+
+        collegeSearchText += event.key.toLowerCase();
+
+        let dropdown =
+            document.getElementById("stockCollegeFilter");
+
+        let options = dropdown.options;
+
+        for (let i = 0; i < options.length; i++) {
+
+            let text =
+                options[i].text.toLowerCase();
+
+            if (
+                options[i].value !== "" &&
+                text.includes(collegeSearchText)
+            ) {
+
+                dropdown.value =
+                    options[i].value;
+
+                filterStockSummary();
+
+                break;
+            }
+        }
+    }
+
+    // Escape = cancel search
+    if (event.key === "Escape") {
+
+        collegeSearchMode = false;
+        collegeSearchText = "";
+
+    }
+
+});
+
+// ================================
+// FILTER STOCK SUMMARY
+// ================================
+
+function filterStockSummary() {
+
+    let stockData =
+        getDashboardStockData();
+
+    displayStockSummary(stockData);
+
+}
+
+function closeStockSummary() {
+
+    document.getElementById("stockSummaryBox").style.display = "none";
+
+}
+
+// Load when Dashboard opens
+window.addEventListener("load", function() {
+
+    loadDashboardCounts();
+
+    loadLowStockAlert();
+
+});
+
+let lowStockSearchText = "";
+
+function lowStockCollegeStarSearch(event) {
+
+    if (event.key === "*") {
+
+        event.preventDefault();
+
+        lowStockSearchText = "";
+
+        return;
+    }
+
+    if (
+        event.key.length === 1 &&
+        lowStockSearchText !== null
+    ) {
+
+        event.preventDefault();
+
+        lowStockSearchText +=
+            event.key.toLowerCase();
+
+        let dropdown =
+            document.getElementById(
+                "lowStockCollegeFilter"
+            );
+
+        let options = dropdown.options;
+
+        for (let i = 0; i < options.length; i++) {
+
+            let text =
+                options[i].text
+                    .toLowerCase();
+
+            if (
+                options[i].value !== "" &&
+                text.includes(lowStockSearchText)
+            ) {
+
+                dropdown.value =
+                    options[i].value;
+
+                filterLowStockSummary();
+
+                break;
+            }
+        }
+    }
+
+    if (event.key === "Escape") {
+
+        lowStockSearchText = "";
+
+    }
+
+}
+
+</script>
 
 </body>
 </html>

@@ -346,6 +346,32 @@ Grand Total : ₹ <span id="grandTotal">0</span>
 
 <script>
 
+function loadCategoryForEdit(categoryValue){
+
+    let categoryDropdown = document.getElementById("category");
+
+    if(!categoryDropdown) return;
+
+    let categories =
+        JSON.parse(localStorage.getItem("categories")) || [];
+
+    categoryDropdown.innerHTML =
+        '<option value="">-- Select Category --</option>';
+
+    categories.forEach(function(category){
+
+        let option = document.createElement("option");
+
+        option.value = category;
+        option.textContent = category;
+
+        categoryDropdown.appendChild(option);
+
+    });
+
+    categoryDropdown.value = categoryValue || "";
+}
+
 function calculateTotal(element){
 
     let row = element.parentElement.parentElement;
@@ -737,7 +763,14 @@ localStorage.setItem(
 
     alert("✅ Purchase Saved Successfully");
 
+    // If this was an Edit, go back to Purchase / Bill Register
+if(editData){
 
+    window.location.href = "purchasebillregister.html";
+
+    return;
+}
+     
     // Clear Form
 
     document.getElementById("invoice").value = "";
@@ -807,8 +840,14 @@ document.getElementById("vendor").value =
 document.getElementById("college").value =
     purchase.college || "";
 
-document.getElementById("category").value =
-    purchase.category || "";
+setTimeout(function () {
+
+    loadCategoryDropdown();
+
+    document.getElementById("category").value =
+        purchase.category || "";
+
+}, 100);
 
 document.getElementById("purpose").value =
     purchase.purpose || "";

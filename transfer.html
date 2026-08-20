@@ -178,7 +178,7 @@ input{
 
             <label>From College</label>
 
-            <select>
+            <select id="fromCollege">
                 <option value="">-- Select College --</option>
                 <option>KSRCE</option>
                 <option>KSRCT</option>
@@ -193,7 +193,7 @@ input{
 
             <label>To College</label>
 
-            <select>
+            <select id="toCollege">
                 <option value="">-- Select College --</option>
                 <option>KSRCT</option>
                 <option>KSRCE</option>
@@ -229,17 +229,19 @@ input{
 
             <input
                 type="number"
+                id="transferQuantity"
                 placeholder="Enter Quantity"
             >
 
         </div>
 
 
-        <button
-            type="button"
-            class="transfer-btn">
-            🔄 Transfer Item
-        </button>
+<button 
+        type="button"
+        class="transfer-btn"
+        onclick="saveTransfer()">
+        🔄 Transfer Item
+</button>
 
     </div>
 
@@ -248,8 +250,85 @@ input{
 <script src="script.js"></script>
 
 <script>
-    loadTransferItemDropdown();
-</script>
 
+loadTransferItemDropdown();
+
+function saveTransfer(){
+
+    alert("Transfer button working!");
+
+    let fromCollege =
+        document.getElementById("fromCollege").value;
+
+    let toCollege =
+        document.getElementById("toCollege").value;
+
+    let transferDate =
+        document.getElementById("transferDate").value;
+
+    let item =
+        document.getElementById("transferItem").value;
+
+    let quantity =
+        Number(document.getElementById("transferQuantity").value) || 0;
+
+
+    if(fromCollege === ""){
+        alert("Please Select From College");
+        return;
+    }
+
+    if(toCollege === ""){
+        alert("Please Select To College");
+        return;
+    }
+
+    if(fromCollege === toCollege){
+        alert("From College and To College cannot be same");
+        return;
+    }
+
+    if(transferDate === ""){
+        alert("Please Select Transfer Date");
+        return;
+    }
+
+    if(item === ""){
+        alert("Please Select Item");
+        return;
+    }
+
+    if(quantity <= 0){
+        alert("Please Enter Quantity");
+        return;
+    }
+
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+
+    transfers.push({
+
+        fromCollege: fromCollege,
+        toCollege: toCollege,
+        transferDate: transferDate,
+        item: item,
+        quantity: quantity
+
+    });
+
+
+    localStorage.setItem(
+        "transfers",
+        JSON.stringify(transfers)
+    );
+
+
+    alert("✅ Transfer Saved Successfully");
+
+}
+
+</script>
 </body>
 </html>
