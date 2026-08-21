@@ -199,19 +199,34 @@ table tr:hover{
     <h1 id="totalStock">0</h1>
 </div>
 
-<div class="card">
-    <h3>Total Issues</h3>
+<div class="card"
+     onclick="showIssueSummary()"
+     style="cursor:pointer;">
+
+    <h3>📤 Total Issues</h3>
+
     <h1 id="totalIssues">0</h1>
+
 </div>
 
-<div class="card">
-    <h3>Total Remaining</h3>
+<div class="card"
+     onclick="showRemainingSummary()"
+     style="cursor:pointer;">
+
+    <h3>📦 Total Remaining</h3>
+
     <h1 id="totalRemaining">0</h1>
+
 </div>
 
-<div class="card">
-    <h3>Total Transfers</h3>
+<div class="card"
+     onclick="showTransferSummary()"
+     style="cursor:pointer;">
+
+    <h3>🔄 Total Transfers</h3>
+
     <h1 id="totalTransfers">0</h1>
+
 </div>
 
 <div class="card" onclick="showLowStockSummary()" style="cursor:pointer;">
@@ -221,13 +236,115 @@ table tr:hover{
     <h1 id="lowStockCount">0</h1>
 
 </div>
-<div class="card">
-<h3>🏫 Colleges</h3>
-<h1>5</h1>
+ 
+<div class="card"
+     onclick="showCollegeSummary()"
+     style="cursor:pointer;">
+
+    <h3>🏫 Colleges</h3>
+
+    <h1 id="collegeCount">5</h1>
+
 </div>
 
-
 </div> <!-- cards close -->
+
+<!-- Issue Summary -->
+<div class="table-box" id="issueSummaryBox" style="display:none;">
+
+    <h2 style="display:flex; justify-content:space-between; align-items:center;">
+        <span>📤 Issue Summary</span>
+
+        <button
+            type="button"   
+            onclick="closeIssueSummary()"
+            style="
+                background:#dc3545;
+                color:white;
+                border:none;
+                padding:8px 15px;
+                border-radius:5px;
+                cursor:pointer;
+                font-size:14px;
+            "
+        >
+            ✖ Close
+        </button>
+    </h2>
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Filter by College:
+        </label>
+
+        <select
+            id="issueCollegeFilter"
+            onchange="filterIssueSummary()"
+            onkeydown="issueStarSearch(event)"
+            style="
+                margin-left:10px;
+                padding:10px;
+                min-width:220px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+            <option value="">All Colleges</option>
+        </select>
+
+    </div>
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Search Item:
+        </label>
+
+        <input
+            type="text"
+            id="issueItemSearch"
+            placeholder="🔍 Search Item Name..."
+            onkeyup="filterIssueSummary()"
+            style="
+                margin-left:10px;
+                padding:10px;
+                width:250px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Item Name</th>
+                <th>Department</th>
+                <th>Issued To</th>
+                <th>College</th>
+                <th>Quantity</th>
+                <th>Issue Date</th>
+            </tr>
+        </thead>
+
+        <tbody id="issueSummaryBody"></tbody>
+
+        <tfoot>
+            <tr>
+                <th colspan="5">Total</th>
+                <th id="issueSummaryTotal">0</th>
+                <th></th>
+            </tr>
+        </tfoot>
+
+    </table>
+
+</div>
+
 
 <div id="lowStockSummaryBox"
      style="display:none;
@@ -443,6 +560,359 @@ table tr:hover{
 </div>
 <div class="table-box">
 
+<!-- Remaining Summary -->
+
+<div class="table-box" id="remainingSummaryBox" style="display:none;">
+
+    <h2 style="display:flex; justify-content:space-between; align-items:center;">
+
+        <span>📦 Remaining Summary</span>
+
+        <button
+            type="button"
+            onclick="closeRemainingSummary()"
+            style="
+                background:#dc3545;
+                color:white;
+                border:none;
+                padding:8px 15px;
+                border-radius:5px;
+                cursor:pointer;
+                font-size:14px;
+            "
+        >
+            ✖ Close
+        </button>
+
+    </h2>
+
+
+    <!-- College Filter -->
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Filter by College:
+        </label>
+
+        <select
+            id="remainingCollegeFilter"
+            onchange="filterRemainingSummary()"
+            onkeydown="remainingStarSearch(event)"
+            style="
+                margin-left:10px;
+                padding:10px;
+                min-width:220px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+            <option value="">All Colleges</option>
+        </select>
+
+    </div>
+
+
+    <!-- Item Search -->
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Search Item:
+        </label>
+
+        <input
+            type="text"
+            id="remainingItemSearch"
+            placeholder="🔍 Search Item Name..."
+            onkeyup="filterRemainingSummary()"
+            style="
+                margin-left:10px;
+                padding:10px;
+                width:250px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+
+    </div>
+
+
+    <!-- Remaining Table -->
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>S.No</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>College</th>
+                <th>Remaining Qty</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="remainingSummaryBody"></tbody>
+
+        <tfoot>
+
+            <tr>
+
+                <th colspan="6">
+                    TOTAL
+                </th>
+
+                <th id="remainingSummaryTotal">
+                    0
+                </th>
+
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+</div>
+
+<!-- Transfer Summary -->
+
+<div class="table-box" id="transferSummaryBox" style="display:none;">
+
+    <h2 style="display:flex; justify-content:space-between; align-items:center;">
+
+        <span>🔄 Transfer Summary</span>
+
+        <button
+            type="button"
+            onclick="closeTransferSummary()"
+            style="
+                background:#dc3545;
+                color:white;
+                border:none;
+                padding:8px 15px;
+                border-radius:5px;
+                cursor:pointer;
+                font-size:14px;
+            "
+        >
+            ✖ Close
+        </button>
+
+    </h2>
+
+
+    <!-- College Filter -->
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Filter by College:
+        </label>
+
+        <select
+            id="transferCollegeFilter"
+            onchange="filterTransferSummary()"
+            onkeydown="transferStarSearch(event)"
+            style="
+                margin-left:10px;
+                padding:10px;
+                min-width:220px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+            <option value="">All Colleges</option>
+        </select>
+
+    </div>
+
+
+    <!-- Item Search -->
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Search Item:
+        </label>
+
+        <input
+            type="text"
+            id="transferItemSearch"
+            placeholder="🔍 Search Item Name..."
+            onkeyup="filterTransferSummary()"
+            style="
+                margin-left:10px;
+                padding:10px;
+                width:250px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+
+    </div>
+
+
+    <!-- Transfer Table -->
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>S.No</th>
+                <th>Item Name</th>
+                <th>College</th>
+                <th>Transfer To</th>
+                <th>Quantity</th>
+                <th>Transfer Date</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="transferSummaryBody"></tbody>
+
+        <tfoot>
+
+            <tr>
+
+                <th colspan="4">
+                    TOTAL
+                </th>
+
+                <th id="transferSummaryTotal">
+                    0
+                </th>
+
+                <th></th>
+
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+</div>
+
+<!-- College Summary -->
+
+<div
+    class="table-box"
+    id="collegeSummaryBox"
+    style="display:none;"
+>
+
+    <h2 style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    ">
+
+        <span>🏫 College Summary</span>
+
+        <button
+            type="button"
+            onclick="closeCollegeSummary()"
+            style="
+                background:#dc3545;
+                color:white;
+                border:none;
+                padding:8px 15px;
+                border-radius:5px;
+                cursor:pointer;
+                font-size:14px;
+            "
+        >
+            ✖ Close
+        </button>
+
+    </h2>
+
+
+    <!-- College Search -->
+
+    <div style="margin-bottom:20px;">
+
+        <label style="font-weight:bold;">
+            Search College:
+        </label>
+
+        <input
+            type="text"
+            id="collegeSummarySearch"
+            placeholder="🔍 Search College..."
+            onkeyup="filterCollegeSummary()"
+            style="
+                margin-left:10px;
+                padding:10px;
+                width:250px;
+                border:1px solid #ccc;
+                border-radius:5px;
+            "
+        >
+
+    </div>
+
+
+    <!-- College Summary Table -->
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>S.No</th>
+                <th>College</th>
+                <th>Total Stock</th>
+                <th>Total Issues</th>
+                <th>Remaining</th>
+                <th>Total Transfers</th>
+                <th>Low Stock Items</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="collegeSummaryBody"></tbody>
+
+        <tfoot>
+
+            <tr>
+
+                <th colspan="2">
+                    TOTAL
+                </th>
+
+                <th id="collegeStockTotal">
+                    0
+                </th>
+
+                <th id="collegeIssueTotal">
+                    0
+                </th>
+
+                <th id="collegeRemainingTotal">
+                    0
+                </th>
+
+                <th id="collegeTransferTotal">
+                    0
+                </th>
+
+                <th id="collegeLowStockTotal">
+                    0
+                </th>
+
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+</div>
+
 <h2>🔴 Low Stock Alert</h2>
 
 
@@ -536,7 +1006,6 @@ table tr:hover{
 
 </div>
 
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabaseClient.js"></script>
@@ -1339,6 +1808,1435 @@ function filterStockSummary() {
         getDashboardStockData();
 
     displayStockSummary(stockData);
+
+}
+
+function showIssueSummary() {
+
+    // First check the HTML box
+    let box =
+        document.getElementById("issueSummaryBox");
+
+      // Open summary immediately
+      box.style.display = "block";
+
+
+    // Now get issue data
+    let issues = [];
+
+    try {
+
+        issues =
+            JSON.parse(
+                localStorage.getItem("issues")
+            ) || [];
+
+    } catch (error) {
+
+        alert("Issue data error");
+
+        console.error(error);
+
+        return;
+    }
+
+
+    // College dropdown
+    let collegeFilter =
+        document.getElementById(
+            "issueCollegeFilter"
+        );
+
+    let colleges = [];
+
+
+    issues.forEach(function(issue) {
+
+        let college =
+            (issue.college || "").trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+
+            colleges.push(college);
+
+        }
+
+    });
+
+
+    colleges.sort();
+
+
+    if (collegeFilter) {
+
+        collegeFilter.innerHTML =
+            '<option value="">All Colleges</option>';
+
+        colleges.forEach(function(college) {
+
+            collegeFilter.innerHTML +=
+                `<option value="${college}">
+                    ${college}
+                </option>`;
+
+        });
+
+    }
+
+
+    let searchBox =
+        document.getElementById(
+            "issueItemSearch"
+        );
+
+    if (searchBox) {
+
+        searchBox.value = "";
+
+    }   
+
+
+    displayIssueSummary(issues);
+
+}
+
+function showRemainingSummary() {
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let issues =
+        JSON.parse(localStorage.getItem("issues")) || [];
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    let itemMaster =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+    let box =
+        document.getElementById("remainingSummaryBox");
+
+    box.style.display = "block";
+
+
+    let collegeFilter =
+        document.getElementById(
+            "remainingCollegeFilter"
+        );
+
+    let colleges = [];
+
+
+    itemMaster.forEach(function(item) {
+
+        let college =
+            (item.college || "").trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+            colleges.push(college);
+        }
+
+    });
+
+
+    colleges.sort();
+
+    collegeFilter.innerHTML =
+        '<option value="">All Colleges</option>';
+
+
+    colleges.forEach(function(college) {
+
+        collegeFilter.innerHTML +=
+            `<option value="${college}">
+                ${college}
+            </option>`;
+
+    });
+
+
+    document.getElementById(
+        "remainingItemSearch"
+    ).value = "";
+
+
+    displayRemainingSummary(
+        purchases,
+        issues,
+        transfers,
+        itemMaster
+    );
+
+}
+
+function showTransferSummary() {
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    let box =
+        document.getElementById("transferSummaryBox");
+
+    box.style.display = "block";
+
+
+    let collegeFilter =
+        document.getElementById(
+            "transferCollegeFilter"
+        );
+
+    let colleges = [];
+
+
+    transfers.forEach(function(transfer) {
+
+        let college =
+            (
+                transfer.college ||
+                transfer.fromCollege ||
+                ""
+            ).trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+            colleges.push(college);
+        }
+
+    });
+
+
+    colleges.sort();
+
+
+    collegeFilter.innerHTML =
+        '<option value="">All Colleges</option>';
+
+
+    colleges.forEach(function(college) {
+
+        collegeFilter.innerHTML +=
+            `<option value="${college}">
+                ${college}
+            </option>`;
+
+    });
+
+
+    document.getElementById(
+        "transferItemSearch"
+    ).value = "";
+
+
+    displayTransferSummary(transfers);
+
+}
+
+function showCollegeSummary() {
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let issues =
+        JSON.parse(localStorage.getItem("issues")) || [];
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    let items =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+    let box =
+        document.getElementById("collegeSummaryBox");
+
+    box.style.display = "block";
+
+    document.getElementById(
+        "collegeSummarySearch"
+    ).value = "";
+
+    displayCollegeSummary(
+        purchases,
+        issues,
+        transfers,
+        items
+    );
+
+}
+
+function displayCollegeSummary(
+    purchases,
+    issues,
+    transfers,
+    items
+) {
+
+    let searchText =
+        document.getElementById(
+            "collegeSummarySearch"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    let colleges = [];
+
+
+    // Collect colleges from Item Master
+    items.forEach(function(item) {
+
+        let college =
+            (item.college || "").trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+            colleges.push(college);
+        }
+
+    });
+
+
+    // Collect colleges from Purchases
+    purchases.forEach(function(purchase) {
+
+        let college =
+            (purchase.college || "").trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+            colleges.push(college);
+        }
+
+    });
+
+
+    // Collect colleges from Issues
+    issues.forEach(function(issue) {
+
+        let college =
+            (issue.college || "").trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+            colleges.push(college);
+        }
+
+    });
+
+
+    // Collect colleges from Transfers
+    transfers.forEach(function(transfer) {
+
+        let college =
+            (
+                transfer.college ||
+                transfer.fromCollege ||
+                ""
+            ).trim();
+
+        if (
+            college &&
+            !colleges.includes(college)
+        ) {
+            colleges.push(college);
+        }
+
+    });
+
+
+    colleges.sort();
+
+
+    let tbody =
+        document.getElementById(
+            "collegeSummaryBody"
+        );
+
+    tbody.innerHTML = "";
+
+
+    let totalStock = 0;
+    let totalIssues = 0;
+    let totalRemaining = 0;
+    let totalTransfers = 0;
+    let totalLowStock = 0;
+
+
+    let filteredColleges =
+        colleges.filter(function(college) {
+
+            return college
+                .toLowerCase()
+                .includes(searchText);
+
+        });
+
+
+    filteredColleges.forEach(
+        function(college, index) {
+
+            let stock = 0;
+            let issue = 0;
+            let transfer = 0;
+
+
+            // STOCK
+            purchases.forEach(
+                function(purchase) {
+
+                    let purchaseCollege =
+                        (purchase.college || "").trim();
+
+                    if (
+                        purchaseCollege !== college
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !purchase.items ||
+                        !Array.isArray(purchase.items)
+                    ) {
+                        return;
+                    }
+
+                    purchase.items.forEach(
+                        function(item) {
+
+                            stock +=
+                                Number(
+                                    item.quantity
+                                ) || 0;
+
+                        }
+                    );
+
+                }
+            );
+
+
+            // ISSUES
+            issues.forEach(
+                function(item) {
+
+                    if (
+                        (item.college || "").trim()
+                        === college
+                    ) {
+
+                        issue +=
+                            Number(
+                                item.quantity
+                            ) || 0;
+
+                    }
+
+                }
+            );
+
+
+            // TRANSFERS
+            transfers.forEach(
+                function(item) {
+
+                    let fromCollege =
+                        (
+                            item.college ||
+                            item.fromCollege ||
+                            ""
+                        ).trim();
+
+                    if (
+                        fromCollege === college
+                    ) {
+
+                        transfer +=
+                            Number(
+                                item.quantity
+                            ) || 0;
+
+                    }
+
+                }
+            );
+
+
+            let remaining =
+                Math.max(
+                    0,
+                    stock -
+                    issue -
+                    transfer
+                );
+
+
+            // LOW STOCK
+            let lowStockCount = 0;
+
+
+            items.forEach(
+                function(item) {
+
+                    if (
+                        (item.college || "").trim()
+                        !== college
+                    ) {
+                        return;
+                    }
+
+
+                    let quantity =
+                        Number(
+                            item.quantity
+                        ) || 0;
+
+
+                    let lowStock =
+                        Number(
+                            item.lowStock
+                        ) || 0;
+
+
+                    if (
+                        lowStock > 0 &&
+                        quantity <= lowStock
+                    ) {
+
+                        lowStockCount++;
+
+                    }
+
+                }
+            );
+
+
+            totalStock += stock;
+            totalIssues += issue;
+            totalRemaining += remaining;
+            totalTransfers += transfer;
+            totalLowStock += lowStockCount;
+
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>${index + 1}</td>
+
+                    <td>${college}</td>
+
+                    <td>${stock}</td>
+
+                    <td>${issue}</td>
+
+                    <td>${remaining}</td>
+
+                    <td>${transfer}</td>
+
+                    <td>${lowStockCount}</td>
+
+                </tr>
+            `;
+
+        }
+    );
+
+
+    if (
+        filteredColleges.length === 0
+    ) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td
+                    colspan="7"
+                    style="
+                        padding:20px;
+                        text-align:center;
+                    "
+                >
+                    No College Records Found
+                </td>
+            </tr>
+        `;
+
+    }
+
+
+    document.getElementById(
+        "collegeStockTotal"
+    ).innerText = totalStock;
+
+
+    document.getElementById(
+        "collegeIssueTotal"
+    ).innerText = totalIssues;
+
+
+    document.getElementById(
+        "collegeRemainingTotal"
+    ).innerText = totalRemaining;
+
+
+    document.getElementById(
+        "collegeTransferTotal"
+    ).innerText = totalTransfers;
+
+
+    document.getElementById(
+        "collegeLowStockTotal"
+    ).innerText = totalLowStock;
+
+}
+
+function filterCollegeSummary() {
+
+    let searchBox =
+        document.getElementById(
+            "collegeSummarySearch"
+        );
+
+    let searchValue =
+        searchBox.value.trim();
+
+    // * இருந்தால் hidden search character ஆக treat பண்ணி remove செய்கிறோம்
+    if (searchValue.startsWith("*")) {
+
+        searchBox.value =
+            searchValue.substring(1);
+
+    }
+
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let issues =
+        JSON.parse(localStorage.getItem("issues")) || [];
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    let items =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+
+    displayCollegeSummary(
+        purchases,
+        issues,
+        transfers,
+        items
+    );
+
+}
+
+function closeCollegeSummary() {
+
+    document.getElementById(
+        "collegeSummaryBox"
+    ).style.display = "none";
+
+}
+
+function displayTransferSummary(transfers) {
+
+    let selectedCollege =
+        document.getElementById(
+            "transferCollegeFilter"
+        ).value;
+
+    let searchText =
+        document.getElementById(
+            "transferItemSearch"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    let filteredTransfers =
+        transfers.filter(function(transfer) {
+
+            let college =
+                (
+                    transfer.college ||
+                    transfer.fromCollege ||
+                    ""
+                ).trim();
+
+
+            // College Filter
+            if (
+                selectedCollege &&
+                college !== selectedCollege
+            ) {
+                return false;
+            }
+
+
+            // Item Search
+            let itemName =
+                (
+                    transfer.itemName ||
+                    transfer.item ||
+                    ""
+                ).trim().toLowerCase();
+
+
+            if (
+                searchText &&
+                !itemName.includes(searchText)
+            ) {
+                return false;
+            }
+
+
+            return true;
+
+        });
+
+
+    let tbody =
+        document.getElementById(
+            "transferSummaryBody"
+        );
+
+    tbody.innerHTML = "";
+
+
+    let total = 0;
+
+
+    if (
+        filteredTransfers.length === 0
+    ) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td
+                    colspan="6"
+                    style="
+                        padding:20px;
+                        text-align:center;
+                    "
+                >
+                    No Transfer Records Found
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+        filteredTransfers.forEach(
+            function(transfer, index) {
+
+                let quantity =
+                    Number(
+                        transfer.quantity
+                    ) || 0;
+
+
+                total += quantity;
+
+
+                let itemName =
+                    transfer.itemName ||
+                    transfer.item ||
+                    "";
+
+
+                let college =
+                    transfer.college ||
+                    transfer.fromCollege ||
+                    "";
+
+
+                let transferTo =
+                    transfer.toCollege ||
+                    transfer.transferTo ||
+                    "";
+
+
+                let transferDate =
+                    transfer.transferDate ||
+                    transfer.date ||
+                    "";
+
+
+                tbody.innerHTML += `
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>${itemName}</td>
+
+                        <td>${college}</td>
+
+                        <td>${transferTo}</td>
+
+                        <td>${quantity}</td>
+
+                        <td>${transferDate}</td>
+
+                    </tr>
+                `;
+
+            }
+        );
+
+    }
+
+
+    document.getElementById(
+        "transferSummaryTotal"
+    ).innerText = total;
+
+}
+
+function filterTransferSummary() {
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    displayTransferSummary(transfers);
+
+}
+
+function closeTransferSummary() {
+
+    document.getElementById(
+        "transferSummaryBox"
+    ).style.display = "none";
+
+}
+
+let transferSearchText = "";
+
+function transferStarSearch(event) {
+
+    if (event.key === "*") {
+
+        event.preventDefault();
+
+        transferSearchText = "";
+
+        return;
+    }
+
+    if (
+        transferSearchText !== null &&
+        event.key.length === 1
+    ) {
+
+        event.preventDefault();
+
+        transferSearchText +=
+            event.key.toLowerCase();
+
+
+        let dropdown =
+            document.getElementById(
+                "transferCollegeFilter"
+            );
+
+        let options =
+            dropdown.options;
+
+
+        for (
+            let i = 0;
+            i < options.length;
+            i++
+        ) {
+
+            let text =
+                options[i].text.toLowerCase();
+
+
+            if (
+                options[i].value !== "" &&
+                text.includes(transferSearchText)
+            ) {
+
+                dropdown.value =
+                    options[i].value;
+
+                filterTransferSummary();
+
+                break;
+            }
+
+        }
+
+    }
+
+
+    if (event.key === "Escape") {
+
+        transferSearchText = "";
+
+    }
+
+}
+
+function displayRemainingSummary(
+    purchases,
+    issues,
+    transfers,
+    itemMaster
+) {
+
+    let selectedCollege =
+        document.getElementById(
+            "remainingCollegeFilter"
+        ).value;
+
+    let searchText =
+        document.getElementById(
+            "remainingItemSearch"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    let stockMap = {};
+
+
+    // PURCHASE = ADD STOCK
+    purchases.forEach(function(purchase) {
+
+        if (
+            !purchase.items ||
+            !Array.isArray(purchase.items)
+        ) {
+            return;
+        }
+
+        purchase.items.forEach(function(item) {
+
+            let name =
+                (item.item || "").trim();
+
+            if (!name) return;
+
+            let key = name.toLowerCase();
+
+            if (!stockMap[key]) {
+
+                stockMap[key] = {
+                    itemName: name,
+                    quantity: 0
+                };
+
+            }
+
+            stockMap[key].quantity +=
+                Number(item.quantity) || 0;
+
+        });
+
+    });
+
+
+    // ISSUE = REDUCE STOCK
+    issues.forEach(function(issue) {
+
+        let name =
+            (issue.itemName || "").trim();
+
+        if (!name) return;
+
+        let key = name.toLowerCase();
+
+        if (!stockMap[key]) {
+
+            stockMap[key] = {
+                itemName: name,
+                quantity: 0
+            };
+
+        }
+
+        stockMap[key].quantity -=
+            Number(issue.quantity) || 0;
+
+    });
+
+
+    // TRANSFER = REDUCE STOCK
+    transfers.forEach(function(transfer) {
+
+        let name =
+            (
+                transfer.itemName ||
+                transfer.item ||
+                ""
+            ).trim();
+
+        if (!name) return;
+
+        let key = name.toLowerCase();
+
+        if (!stockMap[key]) {
+
+            stockMap[key] = {
+                itemName: name,
+                quantity: 0
+            };
+
+        }
+
+        stockMap[key].quantity -=
+            Number(transfer.quantity) || 0;
+
+    });
+
+
+    let remainingItems = [];
+
+
+    Object.values(stockMap).forEach(function(stock) {
+
+        let masterItem =
+            itemMaster.find(function(item) {
+
+                return (
+                    (item.itemname || "")
+                        .trim()
+                        .toLowerCase()
+                    ===
+                    stock.itemName
+                        .trim()
+                        .toLowerCase()
+                );
+
+            });
+
+
+        if (!masterItem) return;
+
+
+        let remaining =
+            Math.max(
+                0,
+                stock.quantity
+            );
+
+
+        if (remaining <= 0) return;
+
+
+        let college =
+            (masterItem.college || "").trim();
+
+
+        // COLLEGE FILTER
+        if (
+            selectedCollege &&
+            college !== selectedCollege
+        ) {
+            return;
+        }
+
+
+        // ITEM SEARCH
+        if (
+            searchText &&
+            !stock.itemName
+                .toLowerCase()
+                .includes(searchText)
+        ) {
+            return;
+        }
+
+
+        remainingItems.push({
+
+            itemName:
+                stock.itemName,
+
+            category:
+                masterItem.category || "",
+
+            brand:
+                masterItem.brand || "",
+
+            model:
+                masterItem.model || "",
+
+            college:
+                college,
+
+            quantity:
+                remaining
+
+        });
+
+    });
+
+
+    let tbody =
+        document.getElementById(
+            "remainingSummaryBody"
+        );
+
+    tbody.innerHTML = "";
+
+
+    let total = 0;
+
+
+    if (
+        remainingItems.length === 0
+    ) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td
+                    colspan="7"
+                    style="
+                        padding:20px;
+                        text-align:center;
+                    "
+                >
+                    No Remaining Stock Records Found
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+        remainingItems.forEach(
+            function(item, index) {
+
+                total += item.quantity;
+
+                tbody.innerHTML += `
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>${item.itemName}</td>
+
+                        <td>${item.category}</td>
+
+                        <td>${item.brand}</td>
+
+                        <td>${item.model}</td>
+
+                        <td>${item.college}</td>
+
+                        <td>${item.quantity}</td>
+
+                    </tr>
+                `;
+
+            }
+        );
+
+    }
+
+
+    document.getElementById(
+        "remainingSummaryTotal"
+    ).innerText = total;
+
+}
+
+function filterRemainingSummary() {
+
+    let purchases =
+        JSON.parse(localStorage.getItem("purchases")) || [];
+
+    let issues =
+        JSON.parse(localStorage.getItem("issues")) || [];
+
+    let transfers =
+        JSON.parse(localStorage.getItem("transfers")) || [];
+
+    let itemMaster =
+        JSON.parse(localStorage.getItem("items")) || [];
+
+    displayRemainingSummary(
+        purchases,
+        issues,
+        transfers,
+        itemMaster
+    );
+
+}
+
+function closeRemainingSummary() {
+
+    document.getElementById(
+        "remainingSummaryBox"
+    ).style.display = "none";
+
+}
+
+let remainingSearchText = "";
+
+function remainingStarSearch(event) {
+
+    if (event.key === "*") {
+
+        event.preventDefault();
+
+        remainingSearchText = "";
+
+        return;
+    }
+
+
+    if (
+        remainingSearchText !== null &&
+        event.key.length === 1
+    ) {
+
+        event.preventDefault();
+
+        remainingSearchText +=
+            event.key.toLowerCase();
+
+
+        let dropdown =
+            document.getElementById(
+                "remainingCollegeFilter"
+            );
+
+
+        let options =
+            dropdown.options;
+
+
+        for (
+            let i = 0;
+            i < options.length;
+            i++
+        ) {
+
+            let text =
+                options[i].text.toLowerCase();
+
+
+            if (
+                options[i].value !== "" &&
+                text.includes(
+                    remainingSearchText
+                )
+            ) {
+
+                dropdown.value =
+                    options[i].value;
+
+
+                filterRemainingSummary();
+
+
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    if (event.key === "Escape") {
+
+        remainingSearchText = "";
+
+    }
+
+}
+
+function displayIssueSummary(issues) {
+
+    let selectedCollege =
+        document.getElementById(
+            "issueCollegeFilter"
+        ).value;
+
+    let searchText =
+        document.getElementById(
+            "issueItemSearch"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    let filteredIssues =
+        issues.filter(function(issue) {
+
+            if (
+                selectedCollege &&
+                issue.college !== selectedCollege
+            ) {
+                return false;
+            }
+
+            if (
+                searchText &&
+                !(issue.itemName || "")
+                    .toLowerCase()
+                    .includes(searchText)
+            ) {
+                return false;
+            }
+
+            return true;
+
+        });
+
+
+    let tbody =
+        document.getElementById(
+            "issueSummaryBody"
+        );
+
+    tbody.innerHTML = "";
+
+    let total = 0;
+
+
+    if (filteredIssues.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7"
+                    style="
+                        padding:20px;
+                        text-align:center;
+                    ">
+                    No Issue Records Found
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+        filteredIssues.forEach(function(issue, index) {
+
+            let quantity =
+                Number(issue.quantity) || 0;
+
+            total += quantity;
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>${index + 1}</td>
+
+                    <td>${issue.itemName || ""}</td>
+
+                    <td>${issue.department || ""}</td>
+
+                    <td>${issue.issuedTo || ""}</td>
+
+                    <td>${issue.college || ""}</td>
+
+                    <td>${quantity}</td>
+
+                    <td>${issue.issueDate || ""}</td>
+
+                </tr>
+            `;
+
+        });
+
+    }
+
+
+    document.getElementById(
+        "issueSummaryTotal"
+    ).innerText = total;
+
+}
+
+function filterIssueSummary() {
+
+    let issues =
+        JSON.parse(localStorage.getItem("issues")) || [];
+
+    displayIssueSummary(issues);
+
+}
+
+function closeIssueSummary() {
+
+    document.getElementById(
+        "issueSummaryBox"
+    ).style.display = "none";
+
+}
+
+let issueSearchText = "";
+
+function issueStarSearch(event) {
+
+    if (event.key === "*") {
+
+        event.preventDefault();
+
+        issueSearchText = "";
+
+        return;
+    }
+
+    if (
+        event.key.length === 1 &&
+        issueSearchText !== null
+    ) {
+
+        event.preventDefault();
+
+        issueSearchText +=
+            event.key.toLowerCase();
+
+        let dropdown =
+            document.getElementById(
+                "issueCollegeFilter"
+            );
+
+        let options = dropdown.options;
+
+        for (let i = 0; i < options.length; i++) {
+
+            let text =
+                options[i].text.toLowerCase();
+
+            if (
+                options[i].value !== "" &&
+                text.includes(issueSearchText)
+            ) {
+
+                dropdown.value =
+                    options[i].value;
+
+                filterIssueSummary();
+
+                break;
+            }
+        }
+    }
+
+    if (event.key === "Escape") {
+
+        issueSearchText = "";
+
+    }
 
 }
 

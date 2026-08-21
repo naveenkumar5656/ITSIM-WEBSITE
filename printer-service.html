@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Printer & Service - ITSIM</title>
+
+    <link
+    rel="stylesheet"
+    href="printer-service.css"
+>
+
+</head>
+
+
+<body>
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <h2>ITSIM</h2>
+
+        <a href="dashboard.html">
+            🏠 Dashboard
+        </a>
+
+        <a href="itemmaster.html">
+            📦 Item Master
+        </a>
+
+        <a href="printer-service.html"
+           class="active">
+            🖨️ Printer & Service
+        </a>
+
+    </div>
+
+
+    <!-- Main -->
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <h1>
+                🖨️ Printer & Service
+            </h1>
+
+        </div>
+
+
+        <!-- Service Entry -->
+
+        <div class="table-box">
+
+            <h2>
+                Printer / Toner Service Entry
+            </h2>
+
+
+            <div class="form-grid">
+
+
+                <!-- College -->
+
+                <div>
+
+                    <label>
+                        College
+                    </label>
+
+                    <select id="serviceCollege">
+
+                        <option value="">
+                            Select College
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Department -->
+
+                <div>
+
+                    <label>
+                        Department
+                    </label>
+
+                    <select id="serviceDepartment">
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Type -->
+
+                <div>
+
+                    <label>
+                        Printer / Toner
+                    </label>
+
+                    <select id="serviceType">
+
+                        <option value="">
+                            Select Type
+                        </option>
+
+                        <option value="Printer">
+                            Printer
+                        </option>
+
+                        <option value="Toner">
+                            Toner
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Received Through -->
+
+                <div>
+
+                    <label>
+                        Received Through
+                    </label>
+
+                    <select id="receivedThrough">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="Mail">
+                            Mail
+                        </option>
+
+                        <option value="Direct">
+                            Direct
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Service Charge -->
+
+                <div>
+
+                    <label>
+                        Service Charge
+                    </label>
+
+                    <input
+                        type="number"
+                        id="serviceCharge"
+                        placeholder="Enter amount"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <!-- Given Date -->
+
+                <div>
+
+                    <label>
+                        Given Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="givenDate"
+                    >
+
+                </div>
+
+
+                <!-- Return Date -->
+
+                <div>
+
+                    <label>
+                        Return Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="returnDate"
+                    >
+
+                </div>
+
+
+                <!-- Return Person -->
+
+                <div>
+
+                    <label>
+                        Return Person Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="returnPerson"
+                        placeholder="Enter person name"
+                    >
+
+                </div>
+
+
+                <!-- Vendor -->
+
+                <div>
+
+                    <label>
+                        Service Vendor Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="serviceVendor"
+                        placeholder="Enter vendor name"
+                    >
+
+                </div>
+
+
+                <!-- Remarks -->
+
+                <div style="grid-column:1 / -1;">
+
+                    <label>
+                        Remarks
+                    </label>
+
+                    <textarea
+                        id="serviceRemarks"
+                        rows="3"
+                        placeholder="Enter remarks"
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div style="
+                margin-top:20px;
+                display:flex;
+                gap:10px;
+            ">
+
+                <button
+                    type="button"
+                    onclick="savePrinterService()"
+                >
+                    💾 Save
+                </button>
+
+                <button
+                    type="button"
+                    onclick="clearPrinterServiceForm()"
+                >
+                    🔄 Clear
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="printer-service.js"></script>
+
+</body>
+
+</html>
