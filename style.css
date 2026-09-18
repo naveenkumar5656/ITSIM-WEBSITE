@@ -294,9 +294,13 @@ padding:25px;
 }
 
 .developer-credit {
+
     text-align: center;
-    font-size: 12px;
-    color: #777;
-    margin-top: 25px;
-    padding-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f0066;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 8px 0;
+
 }

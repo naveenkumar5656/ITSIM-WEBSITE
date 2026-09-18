@@ -97,6 +97,33 @@ button:hover{
     text-decoration:none;
 }
 
+@media (max-width: 480px){
+
+    body{
+        padding:15px;
+    }
+
+    .login-box{
+        width:100%;
+        max-width:420px;
+        padding:25px 20px;
+    }
+
+    .logo h1{
+        font-size:32px;
+    }
+
+    .logo p{
+        font-size:13px;
+    }
+
+    .remember{
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+}
+
 </style>
 
 </head>
@@ -114,12 +141,22 @@ button:hover{
 
         <div class="input-box">
             <label>Username</label>
-            <input type="text" placeholder="Enter Username" required>
+            <input
+    type="text"
+    id="username"
+    placeholder="Enter Username"
+    required
+>
         </div>
 
         <div class="input-box">
             <label>Password</label>
-            <input type="password" placeholder="Enter Password" required>
+            <input
+    type="password"
+    id="password"
+    placeholder="Enter Password"
+    required
+>
         </div>
 
         <div class="remember">
@@ -147,8 +184,24 @@ button:hover{
 
 function loginUser(){
 
-    // dashboard1 page-ku redirect
-    window.location.href = "dashboard.html";
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    if(username === "admin" && password === "1234"){
+
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("username", username);
+
+        window.location.href = "dashboard.html";
+
+    } else {
+
+        alert("Invalid Username or Password");
+
+    }
 
     return false;
 }

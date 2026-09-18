@@ -1,0 +1,331 @@
+/* =====================================
+   ITSIM MOBILE RESPONSIVE
+   ===================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* =====================================
+   TABLET / MOBILE
+   ===================================== */
+
+@media (max-width: 800px) {
+
+    /* HEADER */
+
+    .header {
+        position: relative !important;
+        height: auto !important;
+        min-height: 60px;
+        padding: 12px 15px !important;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .header h2 {
+        font-size: 21px !important;
+    }
+
+    .header h3,
+    .header p {
+        font-size: 14px !important;
+    }
+
+
+    /* SIDEBAR */
+
+    .sidebar {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    .sidebar a {
+        padding: 13px 15px !important;
+        font-size: 14px;
+    }
+
+
+    /* MAIN */
+
+    .main {
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+        padding: 15px !important;
+        width: 100% !important;
+    }
+
+
+    /* FORM / BOX */
+
+    .form-box,
+    .table-box {
+        width: 100% !important;
+        padding: 15px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+
+    /* 2 COLUMN → 1 COLUMN */
+
+    .grid,
+    .form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+
+    /* FULL WIDTH ITEMS */
+
+    .full {
+        grid-column: auto !important;
+    }
+
+    .form-grid > div[style*="grid-column"],
+    .grid > div[style*="grid-column"] {
+        grid-column: auto !important;
+    }
+
+
+    /* INPUTS */
+
+    input,
+    select,
+    textarea,
+    button {
+        width: 100%;
+        max-width: 100%;
+        font-size: 16px !important;
+    }
+
+
+    /* BUTTONS */
+
+    .buttons {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 10px !important;
+    }
+
+    .buttons button,
+    .buttons a,
+    button {
+        width: 100% !important;
+    }
+
+
+    /* TOP TITLE */
+
+    .topbar {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .topbar h1,
+    .title {
+        font-size: 23px !important;
+    }
+
+
+    /* TABLE */
+
+    .table-box {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 650px;
+    }
+
+
+    /* DASHBOARD CARDS */
+
+    .cards {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .card {
+        width: 100% !important;
+    }
+
+}
+
+
+/* =====================================
+   SMALL MOBILE
+   ===================================== */
+
+@media (max-width: 480px) {
+
+    .header h2 {
+        font-size: 19px !important;
+    }
+
+    .main {
+        padding: 10px !important;
+    }
+
+    .form-box,
+    .table-box {
+        padding: 12px !important;
+        border-radius: 8px;
+    }
+
+    .title {
+        font-size: 21px !important;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 11px !important;
+    }
+
+}
+
+/* =====================================
+   INDEX PAGE - MOBILE
+   ===================================== */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .navbar ul {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .navbar li {
+        margin-left: 0;
+    }
+
+    .navbar a {
+        font-size: 14px;
+    }
+
+    .hero {
+        height: 100vh;
+    }
+
+    .content {
+        width: 90%;
+    }
+
+    .content h1 {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+
+    .content p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .about,
+    .services,
+    .contact {
+        padding: 60px 20px;
+    }
+
+    .about h2,
+    .services h2,
+    .contact h2 {
+        font-size: 30px;
+    }
+
+    .about p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .card {
+        padding: 25px 20px;
+    }
+
+    footer {
+        padding: 20px 15px;
+        font-size: 13px;
+    }
+
+    .developer-credit {
+        font-size: 13px;
+        margin-top: 15px;
+    }
+
+}
+
+
+/* =====================================
+   SMALL MOBILE
+   ===================================== */
+
+@media (max-width: 480px) {
+
+    .navbar {
+        padding: 12px 10px;
+    }
+
+    .navbar ul {
+        gap: 8px;
+    }
+
+    .navbar a {
+        font-size: 13px;
+    }
+
+    .content h1 {
+        font-size: 26px;
+    }
+
+    .content p {
+        font-size: 14px;
+    }
+
+    .content .btn {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+
+}

@@ -1,6 +1,6 @@
 function loginUser() {
 
-    window.location.href = "dashboard1.html";
+    window.location.href = "dashboard.html";
 
     return false;
 
@@ -349,34 +349,6 @@ function loadCategoryDropdown() {
         `;
 
     });
-
-}
-
-function saveBrand() {
-
-    let brand = document.getElementById("brandName").value.trim();
-
-    if (brand == "") {
-        alert("Please Enter Brand Name");
-        return;
-    }
-
-    let brands = JSON.parse(localStorage.getItem("brands")) || [];
-
-    let exists = brands.some(b => b.toLowerCase() === brand.toLowerCase());
-
-    if (exists) {
-        alert("Brand Already Exists");
-        return;
-    }
-
-    brands.push(brand);
-
-    localStorage.setItem("brands", JSON.stringify(brands));
-
-    document.getElementById("brandName").value = "";
-
-    loadBrands();
 
 }
 
